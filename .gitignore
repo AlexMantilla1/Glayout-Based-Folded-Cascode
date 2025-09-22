@@ -1,3 +1,22 @@
+# Ignore simulation results from CACE on designs/sky130/
+# generated sim data
+runs/
+# generated netlists
+netlist/
+# generated doc
+docs/
+
+# Just in case MacOS is used
+.DS_Store
+
+# for any python matter
+__pycache__/
+*.pyc
+
+*Zone.Identifier
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
