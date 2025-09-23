@@ -37,7 +37,7 @@ C {devices/lab_wire.sym} 1020 -230 0 0 {name=p12 sig_type=std_logic lab=VSS}
 C {devices/lab_wire.sym} 1020 -250 0 0 {name=p13 sig_type=std_logic lab=VDD}
 C {devices/capa.sym} 1220 -270 0 0 {name=C4
 m=1
-value=1p
+value=5p
 footprint=1206
 device="ceramic capacitor"}
 C {devices/gnd.sym} 290 -90 0 0 {name=l5 lab=GND}
