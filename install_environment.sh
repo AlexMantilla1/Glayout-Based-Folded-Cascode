@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e  # Exit on error
+set -e -x  # Exit on error
 
 # === Step 1: Basic environment setup ===
 unset PYTHONPATH
@@ -25,7 +25,8 @@ else
 
     # Download and install Miniconda
     echo "Downloading Miniconda..."
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-`uname -i`.sh -O miniconda.sh
+    #wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-`uname -i`.sh -O miniconda.sh
+    wget https://repo.anaconda.com/miniconda/Miniconda3-py310_24.3.0-0-Linux-x86_64.sh -O miniconda.sh
     bash miniconda.sh -b -p "$MINICONDA_DIR"
 
     # Source Conda to make the 'conda' command available
