@@ -2,7 +2,8 @@
 
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-This repository contains the necessary files for the semi-automatic layout generation of a Folded-Cascode Operational Transconductance Amplifier (OTA). The project is developed in Python using the **gLayout** framework and targets the **GlobalFoundries 180nm (gf180mcuD)** PDK.
+This repository contains the necessary files for the semi-automatic layout generation of a Folded-Cascode Operational Transconductance Amplifier (OTA). The project is developed in Python using the **gLayout** framework and targets the **GlobalFoundries 180nm (gf180mcuD)** PDK. The design manual of this Open sourse PDK can be found [here](https://gf180mcu-pdk.readthedocs.io/en/latest/physical_verification/design_manual/Design_Manual.html#design-manual).
+
 
 The methodology involves defining parameterized functions for the circuit, which allows for the automatic generation of multiple layout variations by adjusting design parameters like transistor sizes and placement matrices.
 
@@ -24,7 +25,7 @@ This project is designed to run within the **IIC-OSIC-TOOLS** containerized envi
 
 First, ensure you have Docker installed. Then, pull and run the recommended container for this workflow. For detailed instructions, please refer to the official documentation [here](https://github.com/iic-jku/iic-osic-tools). In this specific work, the VNC interface has been used.
 
-### 1.2. Installing IIC-OSIC-TOOLS Container
+### 1.2. Cloning this Repository
 
 Once inside the container's shell, clone this repository to your working directory.
 
@@ -68,23 +69,12 @@ code .
 
 The repository is organized into design files and the Python-based layout generation scripts.
 
-#### designs/gf180/:
-
-Contains the schematic design and characterization files for the gf180nm PDK.
-
-Xschem: Schematics for the OTA.
-
-CACE: Files for circuit characterization and simulation.
-
-#### glayout/:
-
-Contains the Python source code for the layout generators. This is where the parameterized cells and routing logic are defined.
-
-#### Files for Installing Dependencies:
-
-install_conda_env.sh: The one-time installation script for the Conda environment.
-
-setup_glayout.sh: The script to activate the Conda environment in a terminal session.
+* `designs/gf180/`: Contains the schematic and characterization files.
+    * **Xschem**: Schematics for the OTA.
+    * **CACE**: Files for circuit simulation.
+* `glayout/`: Contains the Python source code for the layout generators.
+* `install_conda_env.sh`: A one-time script to install the Conda environment.
+* `setup_glayout.sh`: A script to activate the Conda environment in a new terminal session.
 
 ## 3. Specifications of the Designed Folded Cascode
 
@@ -96,8 +86,7 @@ while the biasing circuit is presented as:
 
 ![Biasing Circuit Schematic](img/Folded_bias.png)
 
-
-The table below summarizes the key performance metrics obtained from pre and post-layout simulations for V1 design.
+Full details for all four generated designs can be found in the dedicated README file for the gf180 designs [designs/gf180/README.md](./designs/gf180/README.md). As illustration example, the table below summarizes the key performance metrics obtained from pre and post-layout simulations for V1 design.
 
 
 <table align="center">

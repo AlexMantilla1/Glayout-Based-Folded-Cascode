@@ -143,7 +143,7 @@ def macro_two_transistor_placement_Onchip(
     )
     devA_sd_extension = abs(pdk.get_grule("met2")["min_separation"])
     kwargs["gate_route_extension"] = pdk.snap_to_2xgrid(devA_gate_extension)
-    kwargs["sd_route_extension"] = pdk.snap_to_2xgrid(devA_sd_extension+0.1)
+    kwargs["sd_route_extension"] = pdk.snap_to_2xgrid(devA_sd_extension + 0.1)
     devA = multiplier(
         width=width1, length=length1, fingers=fingers1, rmult=width_route_mult, **kwargs
     )
@@ -158,7 +158,7 @@ def macro_two_transistor_placement_Onchip(
             2 * pdk.get_grule("met2")["min_separation"] + devA.ports["gate_W"].width
         )
     )
-    kwargs["sd_route_extension"] = pdk.snap_to_2xgrid(devB_sd_extension+0.1)
+    kwargs["sd_route_extension"] = pdk.snap_to_2xgrid(devB_sd_extension + 0.1)
     kwargs["gate_route_extension"] = pdk.snap_to_2xgrid(devB_gate_extension)
     devB = multiplier(
         width=width1, length=length1, fingers=fingers1, rmult=width_route_mult, **kwargs
@@ -247,14 +247,16 @@ def macro_two_transistor_placement_Onchip(
             ymove_temp = (
                 abs(distance_center2bottom_ref)
                 + abs(distance_center2top_pre_ref)
-                + min_separation +0.01
+                + min_separation
+                + 0.01
             )
             ymove += ymove_temp
             if even and i == middle_transistor:
                 # If even need more space in the middle row for the output
                 extra_space = pdk.snap_to_2xgrid(
                     evaluate_bbox(via_stack(pdk, "met2", "met3"))[1]
-                    + 2 * pdk.get_grule("met2")["min_separation"] + 0.01
+                    + 2 * pdk.get_grule("met2")["min_separation"]
+                    + 0.01
                 )
                 ymove += extra_space
         for j in range(len(transistors[i])):
@@ -266,7 +268,11 @@ def macro_two_transistor_placement_Onchip(
             else:
                 pre_last_size = evaluate_bbox(transistors[i][j - 1])
                 # rest of transistors
-                xmove += (size_transistor[0] + pre_last_size[0]) / 2 + min_separation_x +0.01
+                xmove += (
+                    (size_transistor[0] + pre_last_size[0]) / 2
+                    + min_separation_x
+                    + 0.01
+                )
             transistors[i][j].movex(pdk.snap_to_2xgrid(xmove))
             transistors[i][j].movey(pdk.snap_to_2xgrid(ymove))
             if matriz[i][j] == 0:
@@ -424,21 +430,35 @@ def macro_two_transistor_placement_Onchip(
         )
         matplace_centered.add_ports(tapring_ref.get_ports_list(), prefix="tie_")
         if with_dummy:
-            #first row
-            first_mos_ds = matplace_centered.ports["Di0_j0leftsd_array_row0_col0_top_met_W"]
-            first_mos_ds.layer = [36,0]
-            first_mos_ds_l = matplace_centered.ports["Di0_j0leftsd_array_row0_col0_top_met_E"]
-            first_mos_ds_l.layer = [36,0]
+            # first row
+            first_mos_ds = matplace_centered.ports[
+                "Di0_j0leftsd_array_row0_col0_top_met_W"
+            ]
+            first_mos_ds.layer = [36, 0]
+            first_mos_ds_l = matplace_centered.ports[
+                "Di0_j0leftsd_array_row0_col0_top_met_E"
+            ]
+            first_mos_ds_l.layer = [36, 0]
             first_mos_gate = matplace_centered.ports["Di0_j0gate_W"]
-            first_mos_gate_R = matplace_centered.ports["Di0_j" + str(len(matrizT) - 1) + "gate_E"] 
+            first_mos_gate_R = matplace_centered.ports[
+                "Di0_j" + str(len(matrizT) - 1) + "gate_E"
+            ]
 
-            #last row
-            last_mos_ds = matplace_centered.ports["Di" + str(len(matriz) - 1) + "_j0leftsd_array_row0_col0_top_met_W"]
-            last_mos_ds.layer = [36,0]
-            last_mos_ds_l = matplace_centered.ports["Di" + str(len(matriz) - 1) + "_j0leftsd_array_row0_col0_top_met_E"]
-            last_mos_ds_l.layer = [36,0]
-            last_mos_gate = matplace_centered.ports["Di" + str(len(matriz) - 1) + "_j0gate_W"]
-            last_mos_gate_R = matplace_centered.ports["Di" + str(len(matriz) - 1) + "_j" + str(len(matrizT) - 1) + "gate_E"]
+            # last row
+            last_mos_ds = matplace_centered.ports[
+                "Di" + str(len(matriz) - 1) + "_j0leftsd_array_row0_col0_top_met_W"
+            ]
+            last_mos_ds.layer = [36, 0]
+            last_mos_ds_l = matplace_centered.ports[
+                "Di" + str(len(matriz) - 1) + "_j0leftsd_array_row0_col0_top_met_E"
+            ]
+            last_mos_ds_l.layer = [36, 0]
+            last_mos_gate = matplace_centered.ports[
+                "Di" + str(len(matriz) - 1) + "_j0gate_W"
+            ]
+            last_mos_gate_R = matplace_centered.ports[
+                "Di" + str(len(matriz) - 1) + "_j" + str(len(matrizT) - 1) + "gate_E"
+            ]
 
             tie_left_W = matplace_centered.ports["tie_W_array_row0_col0_top_met_W"]
             tie_right = matplace_centered.ports["tie_E_array_row0_col0_top_met_E"]
@@ -455,9 +475,7 @@ def macro_two_transistor_placement_Onchip(
                     matplace_centered << straight_route(
                         pdk, first_mos_gate_R, tie_left_W
                     )
-                    matplace_centered << straight_route(
-                        pdk, first_mos_gate, tie_right
-                    )
+                    matplace_centered << straight_route(pdk, first_mos_gate, tie_right)
                 elif i == len(matriz) - 1:
                     # Last Dummys
                     matplace_centered << straight_route(
@@ -469,11 +487,14 @@ def macro_two_transistor_placement_Onchip(
                     matplace_centered << straight_route(
                         pdk, last_mos_gate_R, tie_left_W
                     )
-                    matplace_centered << straight_route(
-                        pdk, last_mos_gate, tie_right
-                    )
+                    matplace_centered << straight_route(pdk, last_mos_gate, tie_right)
                 else:
-                    matplace_centered.ports["Di"+ str(i)+ "_j0"+ "row0_col0_rightsd_array_row0_col0_top_met_E"].layer = [36,0]
+                    matplace_centered.ports[
+                        "Di"
+                        + str(i)
+                        + "_j0"
+                        + "row0_col0_rightsd_array_row0_col0_top_met_E"
+                    ].layer = [36, 0]
                     matplace_centered << straight_route(
                         pdk,
                         matplace_centered.ports[
@@ -485,7 +506,13 @@ def macro_two_transistor_placement_Onchip(
                         tie_left_W,
                         width=width_route_dummy,
                     )
-                    matplace_centered.ports["Di"+ str(i) + "_j" + str(len(matriz[0]) - 1) + "leftsd_array_row0_col0_top_met_W"].layer = [36,0]
+                    matplace_centered.ports[
+                        "Di"
+                        + str(i)
+                        + "_j"
+                        + str(len(matriz[0]) - 1)
+                        + "leftsd_array_row0_col0_top_met_W"
+                    ].layer = [36, 0]
                     matplace_centered << straight_route(
                         pdk,
                         matplace_centered.ports[
@@ -723,37 +750,71 @@ def macro_two_transistor_placement_Onchip(
     min_separation_via2 = pdk.snap_to_2xgrid(pdk.get_grule("via2")["min_separation"])
     min_separation_met3 = pdk.snap_to_2xgrid(pdk.get_grule("met3")["min_separation"])
 
-    # Gate port 
+    # Gate port
     gateA = matplace_centered << via_stack(pdk, "met2", "met3")
-    gateA.movex(pdk.snap_to_2xgrid(-dims[0] / 2 - size_out_ports[0]/2 - min_separation_met2))
+    gateA.movex(
+        pdk.snap_to_2xgrid(-dims[0] / 2 - size_out_ports[0] / 2 - min_separation_met2)
+    )
     gateA.movey(ypos)
     matplace_centered.add_ports(gateA.get_ports_list(), prefix="A_gate_")
     if enable_B:
         gateB = matplace_centered << via_stack(pdk, "met2", "met3")
-        gateB.movex(pdk.snap_to_2xgrid(dims[0] / 2 + size_out_ports[0]/2 + min_separation_met2))
+        gateB.movex(
+            pdk.snap_to_2xgrid(
+                dims[0] / 2 + size_out_ports[0] / 2 + min_separation_met2
+            )
+        )
         gateB.movey(ypos)
         matplace_centered.add_ports(gateB.get_ports_list(), prefix="B_gate_")
 
     # Source port
     sourceA = matplace_centered << via_stack(pdk, "met2", "met3")
-    sourceA.movey(pdk.snap_to_2xgrid(-dims[1] / 2 - size_out_ports[0] / 2 - min_separation_met2))
-    sourceA.movex(pdk.snap_to_2xgrid(-min_separation_met3 - size_out_ports[0] / 2 - min_separation_via2))
+    sourceA.movey(
+        pdk.snap_to_2xgrid(-dims[1] / 2 - size_out_ports[0] / 2 - min_separation_met2)
+    )
+    sourceA.movex(
+        pdk.snap_to_2xgrid(
+            -min_separation_met3 - size_out_ports[0] / 2 - min_separation_via2
+        )
+    )
     matplace_centered.add_ports(sourceA.get_ports_list(), prefix="A_source_")
     if enable_B:
         sourceB = matplace_centered << via_stack(pdk, "met2", "met3")
-        sourceB.movey(pdk.snap_to_2xgrid(-dims[1] / 2 - 1.5 * size_out_ports[0] - 2*min_separation_met2))
-        sourceB.movex(pdk.snap_to_2xgrid(min_separation_met3 + size_out_ports[0] / 2 + min_separation_via2))
+        sourceB.movey(
+            pdk.snap_to_2xgrid(
+                -dims[1] / 2 - 1.5 * size_out_ports[0] - 2 * min_separation_met2
+            )
+        )
+        sourceB.movex(
+            pdk.snap_to_2xgrid(
+                min_separation_met3 + size_out_ports[0] / 2 + min_separation_via2
+            )
+        )
         matplace_centered.add_ports(sourceB.get_ports_list(), prefix="B_source_")
 
     # Drain port
     drainA = matplace_centered << via_stack(pdk, "met2", "met3")
-    drainA.movey(pdk.snap_to_2xgrid(dims[1] / 2 + size_out_ports[0] / 2 + min_separation_met2))
-    drainA.movex(pdk.snap_to_2xgrid(-min_separation_met3 - size_out_ports[0] / 2 - min_separation_via2))
+    drainA.movey(
+        pdk.snap_to_2xgrid(dims[1] / 2 + size_out_ports[0] / 2 + min_separation_met2)
+    )
+    drainA.movex(
+        pdk.snap_to_2xgrid(
+            -min_separation_met3 - size_out_ports[0] / 2 - min_separation_via2
+        )
+    )
     matplace_centered.add_ports(drainA.get_ports_list(), prefix="A_drain_")
     if enable_B:
         drainB = matplace_centered << via_stack(pdk, "met2", "met3")
-        drainB.movey(pdk.snap_to_2xgrid(dims[1] / 2 + 1.5 * size_out_ports[0] + 2*min_separation_met2))
-        drainB.movex(pdk.snap_to_2xgrid(min_separation_met3 + size_out_ports[0] / 2 + min_separation_via2))
+        drainB.movey(
+            pdk.snap_to_2xgrid(
+                dims[1] / 2 + 1.5 * size_out_ports[0] + 2 * min_separation_met2
+            )
+        )
+        drainB.movex(
+            pdk.snap_to_2xgrid(
+                min_separation_met3 + size_out_ports[0] / 2 + min_separation_via2
+            )
+        )
         matplace_centered.add_ports(drainB.get_ports_list(), prefix="B_drain_")
 
     matplace_centered = rename_ports_by_orientation(matplace_centered)
@@ -928,72 +989,86 @@ def macro_two_transistor_placement_Onchip(
                 names += ["B_source_T_Hor_", "B_drain_T_Hor_"]
         elif pdk_gf180:
             ports_list = [
-                #A_source_T_Hor_
+                # A_source_T_Hor_
                 L1.ports["bottom_lay_W"],
                 L1.ports["bottom_lay_N"],
                 L2.ports["bottom_lay_E"],
                 L2.ports["bottom_lay_S"],
-                #A_drain_T_Hor_
+                # A_drain_T_Hor_
                 L5.ports["bottom_lay_W"],
                 L5.ports["bottom_lay_N"],
                 L6.ports["bottom_lay_E"],
                 L6.ports["bottom_lay_S"],
-                #A_source_T_Ver_L_
+                # A_source_T_Ver_L_
                 L1.ports["bottom_lay_W"],
-                matplace_centered.ports['A_source_L_23_top_met_N'],
-                matplace_centered.ports['A_source_L_23_top_met_E'],
+                matplace_centered.ports["A_source_L_23_top_met_N"],
+                matplace_centered.ports["A_source_L_23_top_met_E"],
                 L1.ports["bottom_lay_S"],
-                #A_source_T_Ver_R_
-                matplace_centered.ports['A_source_R_23_top_met_W'],
-                matplace_centered.ports['A_source_R_23_top_met_N'],
+                # A_source_T_Ver_R_
+                matplace_centered.ports["A_source_R_23_top_met_W"],
+                matplace_centered.ports["A_source_R_23_top_met_N"],
                 L2.ports["bottom_lay_E"],
                 L2.ports["bottom_lay_S"],
-                #A_drain_T_Ver_L_
-                matplace_centered.ports['A_drain_L_23_top_met_W'],
+                # A_drain_T_Ver_L_
+                matplace_centered.ports["A_drain_L_23_top_met_W"],
                 L5.ports["bottom_lay_N"],
                 L5.ports["bottom_lay_E"],
-                matplace_centered.ports['A_drain_L_23_top_met_S'],
-                #A_drain_T_Ver_R_
+                matplace_centered.ports["A_drain_L_23_top_met_S"],
+                # A_drain_T_Ver_R_
                 L6.ports["bottom_lay_W"],
                 L6.ports["bottom_lay_N"],
-                matplace_centered.ports['A_drain_R_23_top_met_E'],
-                matplace_centered.ports['A_drain_R_23_top_met_S'],
+                matplace_centered.ports["A_drain_R_23_top_met_E"],
+                matplace_centered.ports["A_drain_R_23_top_met_S"],
             ]
-            names = ["A_source_T_Hor_", "A_drain_T_Hor_", "A_source_T_Ver_L_", "A_source_T_Ver_R_", "A_drain_T_Ver_L_", "A_drain_T_Ver_R_"]
+            names = [
+                "A_source_T_Hor_",
+                "A_drain_T_Hor_",
+                "A_source_T_Ver_L_",
+                "A_source_T_Ver_R_",
+                "A_drain_T_Ver_L_",
+                "A_drain_T_Ver_R_",
+            ]
             if enable_B:
                 ports_list += [
-                    #B_source_T_Hor_
+                    # B_source_T_Hor_
                     L3.ports["bottom_lay_W"],
                     L3.ports["bottom_lay_N"],
                     L4.ports["bottom_lay_E"],
                     L4.ports["bottom_lay_S"],
-                    #B_drain_T_Hor_
+                    # B_drain_T_Hor_
                     L7.ports["bottom_lay_W"],
                     L7.ports["bottom_lay_N"],
                     L8.ports["bottom_lay_E"],
                     L8.ports["bottom_lay_S"],
-                    #B_source_T_Ver_L_
+                    # B_source_T_Ver_L_
                     L3.ports["bottom_lay_W"],
-                    matplace_centered.ports['B_source_L_23_top_met_N'],
-                    matplace_centered.ports['B_source_L_23_top_met_E'],
+                    matplace_centered.ports["B_source_L_23_top_met_N"],
+                    matplace_centered.ports["B_source_L_23_top_met_E"],
                     L3.ports["bottom_lay_S"],
-                    #B_source_T_Ver_R_
-                    matplace_centered.ports['B_source_R_23_top_met_W'],
-                    matplace_centered.ports['B_source_R_23_top_met_N'],
+                    # B_source_T_Ver_R_
+                    matplace_centered.ports["B_source_R_23_top_met_W"],
+                    matplace_centered.ports["B_source_R_23_top_met_N"],
                     L4.ports["bottom_lay_E"],
                     L4.ports["bottom_lay_S"],
-                    #B_drain_T_Ver_L_
-                    matplace_centered.ports['B_drain_L_23_top_met_W'],
+                    # B_drain_T_Ver_L_
+                    matplace_centered.ports["B_drain_L_23_top_met_W"],
                     L7.ports["bottom_lay_N"],
                     L7.ports["bottom_lay_E"],
-                    matplace_centered.ports['B_drain_L_23_top_met_S'],
-                    #B_drain_T_Ver_R_
+                    matplace_centered.ports["B_drain_L_23_top_met_S"],
+                    # B_drain_T_Ver_R_
                     L8.ports["bottom_lay_W"],
                     L8.ports["bottom_lay_N"],
-                    matplace_centered.ports['B_drain_R_23_top_met_E'],
-                    matplace_centered.ports['B_drain_R_23_top_met_S'],  
+                    matplace_centered.ports["B_drain_R_23_top_met_E"],
+                    matplace_centered.ports["B_drain_R_23_top_met_S"],
                 ]
-                names += ["B_source_T_Hor_", "B_drain_T_Hor_", "B_source_T_Ver_L_", "B_source_T_Ver_R_", "B_drain_T_Ver_L_", "B_drain_T_Ver_R_"]
+                names += [
+                    "B_source_T_Hor_",
+                    "B_drain_T_Hor_",
+                    "B_source_T_Ver_L_",
+                    "B_source_T_Ver_R_",
+                    "B_drain_T_Ver_L_",
+                    "B_drain_T_Ver_R_",
+                ]
 
         for i in range(len(names)):
             component.add_port(
@@ -1056,7 +1131,7 @@ def interdigitado_placement_Onchip(
     args:
     pdk = pdk to use
     deviceA_and_B = the device to place for both transistors (either nfet or pfet)
-    output = choose the type of output ports between metal or via 
+    output = choose the type of output ports between metal or via
     output_separation = Adds extra spacing to the port position, if routed is active it also modifies the width of the route
     width = Transistor width
     length = Transistor length
@@ -1102,9 +1177,9 @@ def interdigitado_placement_Onchip(
     kwargs["pdk"] = pdk
     kwargs["dummy"] = (False, False)
     kwargs["routing"] = False
-    #kwargs["sd_route_topmet"] = "met3"
-    #kwargs["inter_finger_topmet"] = "met3"
-    #kwargs["gate_route_extension"] = abs(pdk.get_grule("met2")["min_separation"])
+    # kwargs["sd_route_topmet"] = "met3"
+    # kwargs["inter_finger_topmet"] = "met3"
+    # kwargs["gate_route_extension"] = abs(pdk.get_grule("met2")["min_separation"])
     reference = multiplier(
         width=width, length=length, fingers=fingers, gate_down=True, **kwargs
     )
@@ -1114,7 +1189,9 @@ def interdigitado_placement_Onchip(
     if gate_common == False:
         reference = list()
         for i in range(max_output):
-            gate_extension = pdk.get_grule("met2")["min_separation"] + gate_extension_ref * i
+            gate_extension = (
+                pdk.get_grule("met2")["min_separation"] + gate_extension_ref * i
+            )
             kwargs["gate_route_extension"] = pdk.snap_to_2xgrid(gate_extension)
             reference.append(
                 multiplier(
@@ -1254,14 +1331,13 @@ def interdigitado_placement_Onchip(
                 pre_last_size = evaluate_bbox(transistors[i][j - 1])
                 # rest of transistors
                 xmove += (size_transistor[0] + pre_last_size[0]) / 2 + min_separation_x
-            transistors[i][j].movex(pdk.snap_to_2xgrid(round(xmove,2)))
-            transistors[i][j].movey(pdk.snap_to_2xgrid(round(ymove,2)))
+            transistors[i][j].movex(pdk.snap_to_2xgrid(round(xmove, 2)))
+            transistors[i][j].movey(pdk.snap_to_2xgrid(round(ymove, 2)))
             interdigitado.add_ports(
                 transistors[i][j].get_ports_list(),
                 prefix=str(i) + str(j) + "_" + str(array[i][j]) + "_",
             )
 
-    
     # Center the component
     interdigitado = center_component_with_ports(pdk, interdigitado)
     ##RINGS
@@ -1309,92 +1385,100 @@ def interdigitado_placement_Onchip(
         )
         interdigitado.add_ports(tapring_ref.get_ports_list(), prefix="tie_")
         if with_dummy:
-                #first row
-                first_mos_ds = interdigitado.ports["00_0_leftsd_array_row0_col0_top_met_W"]
-                first_mos_ds.layer = [36,0]
-                first_mos_ds_l = interdigitado.ports["00_0_leftsd_array_row0_col0_top_met_E"]
-                first_mos_ds_l.layer = [36,0]
-                first_mos_gate = interdigitado.ports["00_0_gate_W"]
-                first_mos_gate_R = interdigitado.ports["0" + str(len(arrayT) - 1) + "_0_gate_E"] 
+            # first row
+            first_mos_ds = interdigitado.ports["00_0_leftsd_array_row0_col0_top_met_W"]
+            first_mos_ds.layer = [36, 0]
+            first_mos_ds_l = interdigitado.ports[
+                "00_0_leftsd_array_row0_col0_top_met_E"
+            ]
+            first_mos_ds_l.layer = [36, 0]
+            first_mos_gate = interdigitado.ports["00_0_gate_W"]
+            first_mos_gate_R = interdigitado.ports[
+                "0" + str(len(arrayT) - 1) + "_0_gate_E"
+            ]
 
-                #last row
-                last_mos_ds = interdigitado.ports[ str(len(array) - 1) + "0_0_leftsd_array_row0_col0_top_met_W"]
-                last_mos_ds.layer = [36,0]
-                last_mos_ds_l = interdigitado.ports[str(len(array) - 1) + "0_0_leftsd_array_row0_col0_top_met_E"]
-                last_mos_ds_l.layer = [36,0]
-                last_mos_gate = interdigitado.ports[str(len(array) - 1) + "0_0_gate_W"]
-                last_mos_gate_R = interdigitado.ports[str(len(array) - 1) + str(len(arrayT) - 1) + "_0_gate_E"]
+            # last row
+            last_mos_ds = interdigitado.ports[
+                str(len(array) - 1) + "0_0_leftsd_array_row0_col0_top_met_W"
+            ]
+            last_mos_ds.layer = [36, 0]
+            last_mos_ds_l = interdigitado.ports[
+                str(len(array) - 1) + "0_0_leftsd_array_row0_col0_top_met_E"
+            ]
+            last_mos_ds_l.layer = [36, 0]
+            last_mos_gate = interdigitado.ports[str(len(array) - 1) + "0_0_gate_W"]
+            last_mos_gate_R = interdigitado.ports[
+                str(len(array) - 1) + str(len(arrayT) - 1) + "_0_gate_E"
+            ]
 
-                tie_left_W = interdigitado.ports["tie_W_array_row0_col0_top_met_W"]
-                tie_right = interdigitado.ports["tie_E_array_row0_col0_top_met_E"]
-                width_route_dummy = 1 if width >= 1 else width
-                for i in range(len(array)):
-                    if i == 0:
-                        # First Dummys
-                        interdigitado << straight_route(
-                            pdk, first_mos_ds_l, tie_left_W, width=width_route_dummy
-                        )
-                        interdigitado << straight_route(
-                            pdk, first_mos_ds, tie_right, width=width_route_dummy
-                        )
-                        interdigitado << straight_route(
-                            pdk, first_mos_gate_R, tie_left_W
-                        )
-                        interdigitado << straight_route(
-                            pdk, first_mos_gate, tie_right
-                        )
-                    elif i == len(array) - 1:
-                        # Last Dummys
-                        interdigitado << straight_route(
-                            pdk, last_mos_ds_l, tie_left_W, width=width_route_dummy
-                        )
-                        interdigitado << straight_route(
-                            pdk, last_mos_ds, tie_right, width=width_route_dummy
-                        )
-                        interdigitado << straight_route(
-                            pdk, last_mos_gate_R, tie_left_W
-                        )
-                        interdigitado << straight_route(
-                            pdk, last_mos_gate, tie_right
-                        )
-                    else:
-                        interdigitado.ports[str(i)+ "0_0_"+ "row0_col0_rightsd_array_row0_col0_top_met_E"].layer = [36,0]
-                        interdigitado << straight_route(
-                            pdk,
-                            interdigitado.ports[
-                                str(i)
-                                + "0_0_"
-                                + "row0_col0_rightsd_array_row0_col0_top_met_E"
-                            ],
-                            tie_left_W,
-                            width=width_route_dummy,
-                        )
-                        interdigitado.ports[str(i) + str(len(array[0]) - 1) + "_0_leftsd_array_row0_col0_top_met_W"].layer = [36,0]
-                        interdigitado << straight_route(
-                            pdk,
-                            interdigitado.ports[
-                                str(i)
-                                + str(len(array[0]) - 1)
-                                + "_0_leftsd_array_row0_col0_top_met_W"
-                            ],
-                            tie_right,
-                            width=width_route_dummy,
-                        )
-                        interdigitado << straight_route(
-                            pdk,
-                            interdigitado.ports[str(i) + "0_0_gate_E"],
-                            tie_left_W,
-                        )
-                        interdigitado << straight_route(
-                            pdk,
-                            interdigitado.ports[
-                                str(i) + str(len(array[0]) - 1) + "_0_gate_W"
-                            ],
-                            tie_right,
-                        )
+            tie_left_W = interdigitado.ports["tie_W_array_row0_col0_top_met_W"]
+            tie_right = interdigitado.ports["tie_E_array_row0_col0_top_met_E"]
+            width_route_dummy = 1 if width >= 1 else width
+            for i in range(len(array)):
+                if i == 0:
+                    # First Dummys
+                    interdigitado << straight_route(
+                        pdk, first_mos_ds_l, tie_left_W, width=width_route_dummy
+                    )
+                    interdigitado << straight_route(
+                        pdk, first_mos_ds, tie_right, width=width_route_dummy
+                    )
+                    interdigitado << straight_route(pdk, first_mos_gate_R, tie_left_W)
+                    interdigitado << straight_route(pdk, first_mos_gate, tie_right)
+                elif i == len(array) - 1:
+                    # Last Dummys
+                    interdigitado << straight_route(
+                        pdk, last_mos_ds_l, tie_left_W, width=width_route_dummy
+                    )
+                    interdigitado << straight_route(
+                        pdk, last_mos_ds, tie_right, width=width_route_dummy
+                    )
+                    interdigitado << straight_route(pdk, last_mos_gate_R, tie_left_W)
+                    interdigitado << straight_route(pdk, last_mos_gate, tie_right)
+                else:
+                    interdigitado.ports[
+                        str(i) + "0_0_" + "row0_col0_rightsd_array_row0_col0_top_met_E"
+                    ].layer = [36, 0]
+                    interdigitado << straight_route(
+                        pdk,
+                        interdigitado.ports[
+                            str(i)
+                            + "0_0_"
+                            + "row0_col0_rightsd_array_row0_col0_top_met_E"
+                        ],
+                        tie_left_W,
+                        width=width_route_dummy,
+                    )
+                    interdigitado.ports[
+                        str(i)
+                        + str(len(array[0]) - 1)
+                        + "_0_leftsd_array_row0_col0_top_met_W"
+                    ].layer = [36, 0]
+                    interdigitado << straight_route(
+                        pdk,
+                        interdigitado.ports[
+                            str(i)
+                            + str(len(array[0]) - 1)
+                            + "_0_leftsd_array_row0_col0_top_met_W"
+                        ],
+                        tie_right,
+                        width=width_route_dummy,
+                    )
+                    interdigitado << straight_route(
+                        pdk,
+                        interdigitado.ports[str(i) + "0_0_gate_E"],
+                        tie_left_W,
+                    )
+                    interdigitado << straight_route(
+                        pdk,
+                        interdigitado.ports[
+                            str(i) + str(len(array[0]) - 1) + "_0_gate_W"
+                        ],
+                        tie_right,
+                    )
 
     # Add well
-    if deviceA_and_B == 'pfet':
+    if deviceA_and_B == "pfet":
         # Add well
         interdigitado.add_padding(
             layers=(pdk.get_glayer(config["well_layer"]),),
@@ -1432,7 +1516,7 @@ def interdigitado_placement_Onchip(
     # Output port
     T_not_dummy = 0
     size_interdigitado = evaluate_bbox(interdigitado)
-    
+
     for i in range(len(array)):
         for j in range(len(array[i])):
             if array[i][j] == 0:
@@ -1457,7 +1541,7 @@ def interdigitado_placement_Onchip(
                 rect = rectangle(
                     (port_reference_top.width, port_reference_bottom.width),
                     layer=pdk.get_glayer("met3"),
-                    centered = True
+                    centered=True,
                 )
                 via = via_stack(pdk, "met2", "met3")
                 output_port = rect if output == "metal" else via
@@ -1469,24 +1553,36 @@ def interdigitado_placement_Onchip(
                 source = 0
                 for k in range(fingers + 1):
                     salidas_row.append(interdigitado << output_port)
-                    reference = (port_reference_top if k % 2 == 0 else port_reference_bottom)
-                    separation = output_separation[0] + size_output[1] + min_separation_met2 if k%2 == 0 else output_separation[1] + size_output[1] + min_separation_met2
-                    xmove = (reference.center[0])
-                    ymove = (size_interdigitado[1]/2 + size_output[1]/2 + min_separation_met2 + output_separation[0] +(separation*(array[i][j]-1)))
-                    if k%2 == 1:
+                    reference = (
+                        port_reference_top if k % 2 == 0 else port_reference_bottom
+                    )
+                    separation = (
+                        output_separation[0] + size_output[1] + min_separation_met2
+                        if k % 2 == 0
+                        else output_separation[1] + size_output[1] + min_separation_met2
+                    )
+                    xmove = reference.center[0]
+                    ymove = (
+                        size_interdigitado[1] / 2
+                        + size_output[1] / 2
+                        + min_separation_met2
+                        + output_separation[0]
+                        + (separation * (array[i][j] - 1))
+                    )
+                    if k % 2 == 1:
                         ymove -= output_separation[0]
                         ymove += output_separation[1]
-                        ymove = -1*ymove
+                        ymove = -1 * ymove
                     if common_route[0] and k % 2 == 0:
-                        ymove -= separation * (array[i][j]-1)
+                        ymove -= separation * (array[i][j] - 1)
                     elif common_route[1] and k % 2 == 1:
-                        ymove += separation * (array[i][j]-1)
-                    salidas_row[-1].movex(pdk.snap_to_2xgrid(round(xmove,2)))
-                    salidas_row[-1].movey(pdk.snap_to_2xgrid(round(ymove,2)))
-                    if k%2 == 0:
-                        output_port_name = "e2" if output == "metal" else "top_met_N" 
-                    else :
-                        output_port_name = "e4" if output == "metal" else "top_met_S" 
+                        ymove += separation * (array[i][j] - 1)
+                    salidas_row[-1].movex(pdk.snap_to_2xgrid(round(xmove, 2)))
+                    salidas_row[-1].movey(pdk.snap_to_2xgrid(round(ymove, 2)))
+                    if k % 2 == 0:
+                        output_port_name = "e2" if output == "metal" else "top_met_N"
+                    else:
+                        output_port_name = "e4" if output == "metal" else "top_met_S"
 
                     # print(salidas_row[-1].get_ports_list())
                     route = interdigitado << straight_route(
@@ -1516,9 +1612,7 @@ def interdigitado_placement_Onchip(
                     interdigitado.add_ports(
                         salidas_row[-1].get_ports_list(), prefix=prefix
                     )
-                    interdigitado.add_ports(
-                        route.get_ports_list(), prefix=prefix
-                    )
+                    interdigitado.add_ports(route.get_ports_list(), prefix=prefix)
                     if k == fingers:
                         break
                     drain += 1 if k % 2 == 0 else 0
@@ -1546,12 +1640,14 @@ def interdigitado_placement_Onchip(
         for i in range(2):
             salidas_gate.append(interdigitado << output_port)
             referenceg = port_referenceg_left if i == 0 else port_referenceg_right
-            xmove = pdk.snap_to_2xgrid(size_interdigitado[0]/2 + size_output[0]/2 + min_separation_met3)
+            xmove = pdk.snap_to_2xgrid(
+                size_interdigitado[0] / 2 + size_output[0] / 2 + min_separation_met3
+            )
             ymove = pdk.snap_to_2xgrid(referenceg.center[1])
             if i == 0:
-                xmove = -1*xmove            
-            salidas_gate[-1].movex(round(xmove,2))
-            salidas_gate[-1].movey(round(ymove,2))
+                xmove = -1 * xmove
+            salidas_gate[-1].movex(round(xmove, 2))
+            salidas_gate[-1].movey(round(ymove, 2))
             prefix = "gate1_" if i == 0 else "gate2_"
             interdigitado.add_ports(salidas_gate[-1].get_ports_list(), prefix=prefix)
         interdigitado = rename_ports_by_orientation(interdigitado)
@@ -1570,11 +1666,11 @@ def interdigitado_placement_Onchip(
     # routing common nodes
     if routed:
         positions = {}
-        #search initial and last position of each transistor in the array
+        # search initial and last position of each transistor in the array
         array_busqueda = array[1] if with_dummy else array[0]
         for i, num in enumerate(array_busqueda):
             if num not in positions:
-                positions[num] = [i, i]  
+                positions[num] = [i, i]
             else:
                 positions[num][1] = i
         routes = list()
@@ -1584,26 +1680,94 @@ def interdigitado_placement_Onchip(
             if transistor != 0:
                 if positions[transistor][0] == positions[transistor][1]:
                     continue
-                if output == 'via':
-                    firts_port_drain = interdigitado.ports['drain_' + str(positions[transistor][0]) + '_' + str(array_busqueda[positions[transistor][0]]) + '_0_bottom_met_W']
-                    last_port_drain =  interdigitado.ports['drain_' + str(positions[transistor][1]) + '_' + str(array_busqueda[positions[transistor][1]]) + '_0_bottom_met_E']
-                    firts_port_source = interdigitado.ports['source_' + str(positions[transistor][0]) + '_' + str(array_busqueda[positions[transistor][0]]) + '_0_bottom_met_W']
-                    last_port_source =  interdigitado.ports['source_' + str(positions[transistor][1]) + '_' + str(array_busqueda[positions[transistor][1]]) + '_0_bottom_met_E']
+                if output == "via":
+                    firts_port_drain = interdigitado.ports[
+                        "drain_"
+                        + str(positions[transistor][0])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][0]])
+                        + "_0_bottom_met_W"
+                    ]
+                    last_port_drain = interdigitado.ports[
+                        "drain_"
+                        + str(positions[transistor][1])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][1]])
+                        + "_0_bottom_met_E"
+                    ]
+                    firts_port_source = interdigitado.ports[
+                        "source_"
+                        + str(positions[transistor][0])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][0]])
+                        + "_0_bottom_met_W"
+                    ]
+                    last_port_source = interdigitado.ports[
+                        "source_"
+                        + str(positions[transistor][1])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][1]])
+                        + "_0_bottom_met_E"
+                    ]
                 else:
-                    firts_port_drain = interdigitado.ports['drain_' + str(positions[transistor][0]) + '_' + str(array_busqueda[positions[transistor][0]]) + '_0_W']
-                    last_port_drain =  interdigitado.ports['drain_' + str(positions[transistor][1]) + '_' + str(array_busqueda[positions[transistor][1]]) + '_0_E']
-                    firts_port_source = interdigitado.ports['source_' + str(positions[transistor][0]) + '_' + str(array_busqueda[positions[transistor][0]]) + '_0_W']
-                    last_port_source =  interdigitado.ports['source_' + str(positions[transistor][1]) + '_' + str(array_busqueda[positions[transistor][1]]) + '_0_E']
-                #route ports
-                routes.append(interdigitado << straight_route(pdk, firts_port_drain, last_port_drain, width = output_separation[0]))
-                routes.append(interdigitado << straight_route(pdk, firts_port_source, last_port_source, width = output_separation[1]))
-                #save ports
-                interdigitado.add_ports(routes[-2].ports, prefix='route_drain_'+str(transistor)+'_')
-                interdigitado.add_ports(routes[-1].ports, prefix='route_source_'+str(transistor)+'_')
-                ports_routed.append('route_drain_'+str(transistor)+'_route_')
-                ports_routed.append('route_source_'+str(transistor)+'_route_')
-                name_ports_routed.append('route_drain_'+str(transistor)+'_')
-                name_ports_routed.append('route_source_'+str(transistor)+'_')
+                    firts_port_drain = interdigitado.ports[
+                        "drain_"
+                        + str(positions[transistor][0])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][0]])
+                        + "_0_W"
+                    ]
+                    last_port_drain = interdigitado.ports[
+                        "drain_"
+                        + str(positions[transistor][1])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][1]])
+                        + "_0_E"
+                    ]
+                    firts_port_source = interdigitado.ports[
+                        "source_"
+                        + str(positions[transistor][0])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][0]])
+                        + "_0_W"
+                    ]
+                    last_port_source = interdigitado.ports[
+                        "source_"
+                        + str(positions[transistor][1])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][1]])
+                        + "_0_E"
+                    ]
+                # route ports
+                routes.append(
+                    interdigitado
+                    << straight_route(
+                        pdk,
+                        firts_port_drain,
+                        last_port_drain,
+                        width=output_separation[0],
+                    )
+                )
+                routes.append(
+                    interdigitado
+                    << straight_route(
+                        pdk,
+                        firts_port_source,
+                        last_port_source,
+                        width=output_separation[1],
+                    )
+                )
+                # save ports
+                interdigitado.add_ports(
+                    routes[-2].ports, prefix="route_drain_" + str(transistor) + "_"
+                )
+                interdigitado.add_ports(
+                    routes[-1].ports, prefix="route_source_" + str(transistor) + "_"
+                )
+                ports_routed.append("route_drain_" + str(transistor) + "_route_")
+                ports_routed.append("route_source_" + str(transistor) + "_route_")
+                name_ports_routed.append("route_drain_" + str(transistor) + "_")
+                name_ports_routed.append("route_source_" + str(transistor) + "_")
 
     # Save ports
     component = Component()
@@ -1650,13 +1814,14 @@ def interdigitado_placement_Onchip(
                 layer=port.layer,
                 port_type="electrical",
             )
-    
-    interdigitado =  (rename_ports_by_orientation(interdigitado))
-    
+
+    interdigitado = rename_ports_by_orientation(interdigitado)
+
     if routed:
         for i in range(len(ports_routed)):
-            filtrar_puertos(interdigitado, component, ports_routed[i], name_ports_routed[i])
-
+            filtrar_puertos(
+                interdigitado, component, ports_routed[i], name_ports_routed[i]
+            )
 
     ports = list()
     name = list()
@@ -1726,7 +1891,7 @@ def interdigitado_placement_Onchip(
                             + "_route_"
                         )
                         drain += 1
-                        
+
                     else:
                         if output == "metal":
                             ports.append(
@@ -1812,7 +1977,7 @@ def interdigitado_placement_Onchip(
                 layer=port.layer,
                 port_type="electrical",
             )
-    
+
         # ports.append
     # Add ports to component
     for i in range(len(ports)):
@@ -1852,7 +2017,7 @@ def interdigitado_cascode_placement_Onchip(
     args:
     pdk = pdk to use
     deviceA_and_B = the device to place for both transistors (either nfet or pfet)
-    output = choose the type of output ports between metal or via 
+    output = choose the type of output ports between metal or via
     output_separation = Adds extra spacing to the port position, if routed is active it also modifies the width of the route
     width = Transistor width
     length = Transistor length
@@ -1898,7 +2063,7 @@ def interdigitado_cascode_placement_Onchip(
     kwargs["pdk"] = pdk
     kwargs["dummy"] = (False, False)
     kwargs["routing"] = False
-    kwargs["gate_route_extension"] = abs(pdk.get_grule("met2")["min_separation"])    
+    kwargs["gate_route_extension"] = abs(pdk.get_grule("met2")["min_separation"])
     reference = multiplier(
         width=width, length=length, fingers=fingers, gate_down=True, **kwargs
     )
@@ -2011,8 +2176,8 @@ def interdigitado_cascode_placement_Onchip(
                 pre_last_size = evaluate_bbox(transistors[i][j - 1])
                 # rest of transistors
                 xmove += (size_transistor[0] + pre_last_size[0]) / 2 + min_separation_x
-            transistors[i][j].movex(pdk.snap_to_2xgrid(round(xmove,2)))
-            transistors[i][j].movey(pdk.snap_to_2xgrid(round(ymove,2)))
+            transistors[i][j].movex(pdk.snap_to_2xgrid(round(xmove, 2)))
+            transistors[i][j].movey(pdk.snap_to_2xgrid(round(ymove, 2)))
 
             interdigitado.add_ports(
                 transistors[i][j].get_ports_list(),
@@ -2065,90 +2230,98 @@ def interdigitado_cascode_placement_Onchip(
         )
         interdigitado.add_ports(tapring_ref.get_ports_list(), prefix="tie_")
         if with_dummy:
-                #first row
-                first_mos_ds = interdigitado.ports["00_0_leftsd_array_row0_col0_top_met_W"]
-                first_mos_ds.layer = [36,0]
-                first_mos_ds_l = interdigitado.ports["00_0_leftsd_array_row0_col0_top_met_E"]
-                first_mos_ds_l.layer = [36,0]
-                first_mos_gate = interdigitado.ports["00_0_gate_W"]
-                first_mos_gate_R = interdigitado.ports["0" + str(len(arrayT) - 1) + "_0_gate_E"] 
+            # first row
+            first_mos_ds = interdigitado.ports["00_0_leftsd_array_row0_col0_top_met_W"]
+            first_mos_ds.layer = [36, 0]
+            first_mos_ds_l = interdigitado.ports[
+                "00_0_leftsd_array_row0_col0_top_met_E"
+            ]
+            first_mos_ds_l.layer = [36, 0]
+            first_mos_gate = interdigitado.ports["00_0_gate_W"]
+            first_mos_gate_R = interdigitado.ports[
+                "0" + str(len(arrayT) - 1) + "_0_gate_E"
+            ]
 
-                #last row
-                last_mos_ds = interdigitado.ports[ str(len(array) - 1) + "0_0_leftsd_array_row0_col0_top_met_W"]
-                last_mos_ds.layer = [36,0]
-                last_mos_ds_l = interdigitado.ports[str(len(array) - 1) + "0_0_leftsd_array_row0_col0_top_met_E"]
-                last_mos_ds_l.layer = [36,0]
-                last_mos_gate = interdigitado.ports[str(len(array) - 1) + "0_0_gate_W"]
-                last_mos_gate_R = interdigitado.ports[str(len(array) - 1) + str(len(arrayT) - 1) + "_0_gate_E"]
+            # last row
+            last_mos_ds = interdigitado.ports[
+                str(len(array) - 1) + "0_0_leftsd_array_row0_col0_top_met_W"
+            ]
+            last_mos_ds.layer = [36, 0]
+            last_mos_ds_l = interdigitado.ports[
+                str(len(array) - 1) + "0_0_leftsd_array_row0_col0_top_met_E"
+            ]
+            last_mos_ds_l.layer = [36, 0]
+            last_mos_gate = interdigitado.ports[str(len(array) - 1) + "0_0_gate_W"]
+            last_mos_gate_R = interdigitado.ports[
+                str(len(array) - 1) + str(len(arrayT) - 1) + "_0_gate_E"
+            ]
 
-                tie_left_W = interdigitado.ports["tie_W_array_row0_col0_top_met_W"]
-                tie_right = interdigitado.ports["tie_E_array_row0_col0_top_met_E"]
-                width_route_dummy = 1 if width >= 1 else width
-                for i in range(len(array)):
-                    if i == 0:
-                        # First Dummys
-                        interdigitado << straight_route(
-                            pdk, first_mos_ds_l, tie_left_W, width=width_route_dummy
-                        )
-                        interdigitado << straight_route(
-                            pdk, first_mos_ds, tie_right, width=width_route_dummy
-                        )
-                        interdigitado << straight_route(
-                            pdk, first_mos_gate_R, tie_left_W
-                        )
-                        interdigitado << straight_route(
-                            pdk, first_mos_gate, tie_right
-                        )
-                    elif i == len(array) - 1:
-                        # Last Dummys
-                        interdigitado << straight_route(
-                            pdk, last_mos_ds_l, tie_left_W, width=width_route_dummy
-                        )
-                        interdigitado << straight_route(
-                            pdk, last_mos_ds, tie_right, width=width_route_dummy
-                        )
-                        interdigitado << straight_route(
-                            pdk, last_mos_gate_R, tie_left_W
-                        )
-                        interdigitado << straight_route(
-                            pdk, last_mos_gate, tie_right
-                        )
-                    else:
-                        interdigitado.ports[str(i)+ "0_0_"+ "row0_col0_rightsd_array_row0_col0_top_met_E"].layer = [36,0]
-                        interdigitado << straight_route(
-                            pdk,
-                            interdigitado.ports[
-                                str(i)
-                                + "0_0_"
-                                + "row0_col0_rightsd_array_row0_col0_top_met_E"
-                            ],
-                            tie_left_W,
-                            width=width_route_dummy,
-                        )
-                        interdigitado.ports[str(i) + str(len(array[0]) - 1) + "_0_leftsd_array_row0_col0_top_met_W"].layer = [36,0]
-                        interdigitado << straight_route(
-                            pdk,
-                            interdigitado.ports[
-                                str(i)
-                                + str(len(array[0]) - 1)
-                                + "_0_leftsd_array_row0_col0_top_met_W"
-                            ],
-                            tie_right,
-                            width=width_route_dummy,
-                        )
-                        interdigitado << straight_route(
-                            pdk,
-                            interdigitado.ports[str(i) + "0_0_gate_E"],
-                            tie_left_W,
-                        )
-                        interdigitado << straight_route(
-                            pdk,
-                            interdigitado.ports[
-                                str(i) + str(len(array[0]) - 1) + "_0_gate_W"
-                            ],
-                            tie_right,
-                        )
-    if deviceA_and_B == 'pfet':
+            tie_left_W = interdigitado.ports["tie_W_array_row0_col0_top_met_W"]
+            tie_right = interdigitado.ports["tie_E_array_row0_col0_top_met_E"]
+            width_route_dummy = 1 if width >= 1 else width
+            for i in range(len(array)):
+                if i == 0:
+                    # First Dummys
+                    interdigitado << straight_route(
+                        pdk, first_mos_ds_l, tie_left_W, width=width_route_dummy
+                    )
+                    interdigitado << straight_route(
+                        pdk, first_mos_ds, tie_right, width=width_route_dummy
+                    )
+                    interdigitado << straight_route(pdk, first_mos_gate_R, tie_left_W)
+                    interdigitado << straight_route(pdk, first_mos_gate, tie_right)
+                elif i == len(array) - 1:
+                    # Last Dummys
+                    interdigitado << straight_route(
+                        pdk, last_mos_ds_l, tie_left_W, width=width_route_dummy
+                    )
+                    interdigitado << straight_route(
+                        pdk, last_mos_ds, tie_right, width=width_route_dummy
+                    )
+                    interdigitado << straight_route(pdk, last_mos_gate_R, tie_left_W)
+                    interdigitado << straight_route(pdk, last_mos_gate, tie_right)
+                else:
+                    interdigitado.ports[
+                        str(i) + "0_0_" + "row0_col0_rightsd_array_row0_col0_top_met_E"
+                    ].layer = [36, 0]
+                    interdigitado << straight_route(
+                        pdk,
+                        interdigitado.ports[
+                            str(i)
+                            + "0_0_"
+                            + "row0_col0_rightsd_array_row0_col0_top_met_E"
+                        ],
+                        tie_left_W,
+                        width=width_route_dummy,
+                    )
+                    interdigitado.ports[
+                        str(i)
+                        + str(len(array[0]) - 1)
+                        + "_0_leftsd_array_row0_col0_top_met_W"
+                    ].layer = [36, 0]
+                    interdigitado << straight_route(
+                        pdk,
+                        interdigitado.ports[
+                            str(i)
+                            + str(len(array[0]) - 1)
+                            + "_0_leftsd_array_row0_col0_top_met_W"
+                        ],
+                        tie_right,
+                        width=width_route_dummy,
+                    )
+                    interdigitado << straight_route(
+                        pdk,
+                        interdigitado.ports[str(i) + "0_0_gate_E"],
+                        tie_left_W,
+                    )
+                    interdigitado << straight_route(
+                        pdk,
+                        interdigitado.ports[
+                            str(i) + str(len(array[0]) - 1) + "_0_gate_W"
+                        ],
+                        tie_right,
+                    )
+    if deviceA_and_B == "pfet":
         # Add well
         interdigitado.add_padding(
             layers=(pdk.get_glayer(config["well_layer"]),),
@@ -2228,7 +2401,7 @@ def interdigitado_cascode_placement_Onchip(
                 rect = rectangle(
                     (port_reference_top.width, port_reference_bottom.width),
                     layer=pdk.get_glayer("met3"),
-                    centered = True
+                    centered=True,
                 )
                 rect_hor = rectangle(
                     (port_reference_top.width, port_reference_bottom.width),
@@ -2256,10 +2429,20 @@ def interdigitado_cascode_placement_Onchip(
                         salidas_row.append(interdigitado << output_port)
                         reference = port_reference_top
                         xmove = port_reference_top.center[0]
-                        salidas_row[-1].movex(pdk.snap_to_2xgrid(round(xmove,2)))
-                        distance_out_ring = (size_interdigitado[1] / 2 + min_separation_met2 + size_output[1]/2)
-                        separation = output_separation[0] + size_output[1] + min_separation_met2
-                        ymove = distance_out_ring + output_separation[0] + separation * (array[i][j]-1)
+                        salidas_row[-1].movex(pdk.snap_to_2xgrid(round(xmove, 2)))
+                        distance_out_ring = (
+                            size_interdigitado[1] / 2
+                            + min_separation_met2
+                            + size_output[1] / 2
+                        )
+                        separation = (
+                            output_separation[0] + size_output[1] + min_separation_met2
+                        )
+                        ymove = (
+                            distance_out_ring
+                            + output_separation[0]
+                            + separation * (array[i][j] - 1)
+                        )
                         if common_route[0] and k % 2 == 0:
                             ymove -= separation * (array[i][j] - 1)
                         salidas_row[-1].movey(pdk.snap_to_2xgrid(ymove))
@@ -2284,9 +2467,7 @@ def interdigitado_cascode_placement_Onchip(
                         interdigitado.add_ports(
                             salidas_row[-1].get_ports_list(), prefix=prefix
                         )
-                        interdigitado.add_ports(
-                            route.get_ports_list(), prefix=prefix
-                        )
+                        interdigitado.add_ports(route.get_ports_list(), prefix=prefix)
                         drain += 1
                     elif up and k % 2 == 1:
                         # print(k,'ruteo')
@@ -2299,8 +2480,8 @@ def interdigitado_cascode_placement_Onchip(
                             - min_separation_met2,
                         ]
                         middle_port[-1].movex(
-                            pdk.snap_to_2xgrid(round(move_middle_port[0],2))
-                        ).movey(pdk.snap_to_2xgrid(round(move_middle_port[1],2)))
+                            pdk.snap_to_2xgrid(round(move_middle_port[0], 2))
+                        ).movey(pdk.snap_to_2xgrid(round(move_middle_port[1], 2)))
                         extra_movey = (min_separation_met2 + size_via_hor[1]) * (
                             array[i][j] - 1
                         )
@@ -2325,13 +2506,23 @@ def interdigitado_cascode_placement_Onchip(
                         salidas_row.append(interdigitado << output_port)
                         reference = port_reference_bottom
                         xmove = port_reference_bottom.center[0]
-                        salidas_row[-1].movex(pdk.snap_to_2xgrid(round(xmove,2)))
-                        distance_out_ring = (size_interdigitado[1] / 2 + min_separation_met2 + size_output[1]/2)
-                        separation = output_separation[1] + size_output[1] + min_separation_met2
-                        ymove = -1 * (distance_out_ring + output_separation[1] + separation * (array[i][j]-1))
+                        salidas_row[-1].movex(pdk.snap_to_2xgrid(round(xmove, 2)))
+                        distance_out_ring = (
+                            size_interdigitado[1] / 2
+                            + min_separation_met2
+                            + size_output[1] / 2
+                        )
+                        separation = (
+                            output_separation[1] + size_output[1] + min_separation_met2
+                        )
+                        ymove = -1 * (
+                            distance_out_ring
+                            + output_separation[1]
+                            + separation * (array[i][j] - 1)
+                        )
                         if common_route[1] and k % 2 == 0:
-                            ymove += separation * (array[i][j]-1)
-                        salidas_row[-1].movey(pdk.snap_to_2xgrid(round(ymove,2)))
+                            ymove += separation * (array[i][j] - 1)
+                        salidas_row[-1].movey(pdk.snap_to_2xgrid(round(ymove, 2)))
                         output_port_name = "e2" if output == "metal" else "top_met_S"
                         # print(salidas_row[-1].get_ports_list())
                         route = interdigitado << straight_route(
@@ -2353,9 +2544,7 @@ def interdigitado_cascode_placement_Onchip(
                         interdigitado.add_ports(
                             salidas_row[-1].get_ports_list(), prefix=prefix
                         )
-                        interdigitado.add_ports(
-                            route.get_ports_list(), prefix=prefix
-                        )
+                        interdigitado.add_ports(route.get_ports_list(), prefix=prefix)
                         source += 1
                     if k == fingers:
                         break
@@ -2424,22 +2613,50 @@ def interdigitado_cascode_placement_Onchip(
     # Ruteo gate
     for i in range(rows):
         if ((i > 0 and i < rows - 1) and with_dummy) or with_dummy == False:
-            port_reference_left = (interdigitado.ports[str(i) + "1_" + str(array[1][1]) + "_gate_W"] if with_dummy
+            port_reference_left = (
+                interdigitado.ports[str(i) + "1_" + str(array[1][1]) + "_gate_W"]
+                if with_dummy
                 else interdigitado.ports[str(i) + "0_" + str(array[0][0]) + "_gate_W"]
             )
-            port_reference_right = (interdigitado.ports[str(i) + str(cols - 2) + "_" + str(array[i][cols - 2]) + "_gate_E"] if with_dummy
+            port_reference_right = (
+                interdigitado.ports[
+                    str(i) + str(cols - 2) + "_" + str(array[i][cols - 2]) + "_gate_E"
+                ]
+                if with_dummy
                 else interdigitado.ports[
                     str(i) + str(cols - 1) + "_" + str(array[i][cols - 1]) + "_gate_E"
                 ]
             )
             salidas_gate.append(interdigitado << output_port)
             salidas_gate.append(interdigitado << output_port)
-            
-            salidas_gate[-1].movey(pdk.snap_to_2xgrid(round(port_reference_left.center[1],2)))
-            salidas_gate[-1].movex(pdk.snap_to_2xgrid(round(-size_interdigitado[0]/2 - min_separation_met3 - size_output[0]/2,2)))
-            salidas_gate[-2].movey(pdk.snap_to_2xgrid(round(port_reference_right.center[1],2)))
-            salidas_gate[-2].movex(pdk.snap_to_2xgrid(round(size_interdigitado[0]/2 + min_separation_met3 + size_output[0]/2,2)))
-            
+
+            salidas_gate[-1].movey(
+                pdk.snap_to_2xgrid(round(port_reference_left.center[1], 2))
+            )
+            salidas_gate[-1].movex(
+                pdk.snap_to_2xgrid(
+                    round(
+                        -size_interdigitado[0] / 2
+                        - min_separation_met3
+                        - size_output[0] / 2,
+                        2,
+                    )
+                )
+            )
+            salidas_gate[-2].movey(
+                pdk.snap_to_2xgrid(round(port_reference_right.center[1], 2))
+            )
+            salidas_gate[-2].movex(
+                pdk.snap_to_2xgrid(
+                    round(
+                        size_interdigitado[0] / 2
+                        + min_separation_met3
+                        + size_output[0] / 2,
+                        2,
+                    )
+                )
+            )
+
             # prefix = 'gate1_' if i==0 else 'gate2_'
             prefix_left = "gate_" + str(i) + "_l_"
             prefix_right = "gate_" + str(i) + "_r_"
@@ -2469,11 +2686,11 @@ def interdigitado_cascode_placement_Onchip(
     # Ruteo salidas
     if routed:
         positions = {}
-        #search initial and last position of each transistor in the array
+        # search initial and last position of each transistor in the array
         array_busqueda = array[1] if with_dummy else array[0]
         for i, num in enumerate(array_busqueda):
             if num not in positions:
-                positions[num] = [i, i]  
+                positions[num] = [i, i]
             else:
                 positions[num][1] = i
         routes = list()
@@ -2481,26 +2698,94 @@ def interdigitado_cascode_placement_Onchip(
         name_ports_routed = list()
         for transistor in positions:
             if transistor != 0:
-                if output == 'via':
-                    firts_port_drain = interdigitado.ports['drain_' + str(positions[transistor][0]) + '_' + str(array_busqueda[positions[transistor][0]]) + '_0_bottom_met_W']
-                    last_port_drain =  interdigitado.ports['drain_' + str(positions[transistor][1]) + '_' + str(array_busqueda[positions[transistor][1]]) + '_0_bottom_met_E']
-                    firts_port_source = interdigitado.ports['source_' + str(positions[transistor][0]) + '_' + str(array_busqueda[positions[transistor][0]]) + '_0_bottom_met_W']
-                    last_port_source =  interdigitado.ports['source_' + str(positions[transistor][1]) + '_' + str(array_busqueda[positions[transistor][1]]) + '_0_bottom_met_E']
+                if output == "via":
+                    firts_port_drain = interdigitado.ports[
+                        "drain_"
+                        + str(positions[transistor][0])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][0]])
+                        + "_0_bottom_met_W"
+                    ]
+                    last_port_drain = interdigitado.ports[
+                        "drain_"
+                        + str(positions[transistor][1])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][1]])
+                        + "_0_bottom_met_E"
+                    ]
+                    firts_port_source = interdigitado.ports[
+                        "source_"
+                        + str(positions[transistor][0])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][0]])
+                        + "_0_bottom_met_W"
+                    ]
+                    last_port_source = interdigitado.ports[
+                        "source_"
+                        + str(positions[transistor][1])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][1]])
+                        + "_0_bottom_met_E"
+                    ]
                 else:
-                    firts_port_drain = interdigitado.ports['drain_' + str(positions[transistor][0]) + '_' + str(array_busqueda[positions[transistor][0]]) + '_0_e1']
-                    last_port_drain =  interdigitado.ports['drain_' + str(positions[transistor][1]) + '_' + str(array_busqueda[positions[transistor][1]]) + '_0_e3']
-                    firts_port_source = interdigitado.ports['source_' + str(positions[transistor][0]) + '_' + str(array_busqueda[positions[transistor][0]]) + '_0_e1']
-                    last_port_source =  interdigitado.ports['source_' + str(positions[transistor][1]) + '_' + str(array_busqueda[positions[transistor][1]]) + '_0_e3']
-                #route ports
-                routes.append(interdigitado << straight_route(pdk, firts_port_drain, last_port_drain, width = output_separation[0]))
-                routes.append(interdigitado << straight_route(pdk, firts_port_source, last_port_source, width = output_separation[1]))
-                #save ports
-                interdigitado.add_ports(routes[-2].ports, prefix='route_drain_'+str(transistor)+'_')
-                interdigitado.add_ports(routes[-1].ports, prefix='route_source_'+str(transistor)+'_')
-                ports_routed.append('route_drain_'+str(transistor)+'_route_')
-                ports_routed.append('route_source_'+str(transistor)+'_route_')
-                name_ports_routed.append('route_drain_'+str(transistor)+'_')
-                name_ports_routed.append('route_source_'+str(transistor)+'_')    
+                    firts_port_drain = interdigitado.ports[
+                        "drain_"
+                        + str(positions[transistor][0])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][0]])
+                        + "_0_e1"
+                    ]
+                    last_port_drain = interdigitado.ports[
+                        "drain_"
+                        + str(positions[transistor][1])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][1]])
+                        + "_0_e3"
+                    ]
+                    firts_port_source = interdigitado.ports[
+                        "source_"
+                        + str(positions[transistor][0])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][0]])
+                        + "_0_e1"
+                    ]
+                    last_port_source = interdigitado.ports[
+                        "source_"
+                        + str(positions[transistor][1])
+                        + "_"
+                        + str(array_busqueda[positions[transistor][1]])
+                        + "_0_e3"
+                    ]
+                # route ports
+                routes.append(
+                    interdigitado
+                    << straight_route(
+                        pdk,
+                        firts_port_drain,
+                        last_port_drain,
+                        width=output_separation[0],
+                    )
+                )
+                routes.append(
+                    interdigitado
+                    << straight_route(
+                        pdk,
+                        firts_port_source,
+                        last_port_source,
+                        width=output_separation[1],
+                    )
+                )
+                # save ports
+                interdigitado.add_ports(
+                    routes[-2].ports, prefix="route_drain_" + str(transistor) + "_"
+                )
+                interdigitado.add_ports(
+                    routes[-1].ports, prefix="route_source_" + str(transistor) + "_"
+                )
+                ports_routed.append("route_drain_" + str(transistor) + "_route_")
+                ports_routed.append("route_source_" + str(transistor) + "_route_")
+                name_ports_routed.append("route_drain_" + str(transistor) + "_")
+                name_ports_routed.append("route_source_" + str(transistor) + "_")
 
     # Save ports
     component = Component()
@@ -2699,8 +2984,9 @@ def interdigitado_cascode_placement_Onchip(
 
     if routed:
         for i in range(len(ports_routed)):
-            filtrar_puertos(interdigitado, component, ports_routed[i], name_ports_routed[i])
-
+            filtrar_puertos(
+                interdigitado, component, ports_routed[i], name_ports_routed[i]
+            )
 
     for i in range(len(ports)):
         filtrar_puertos(interdigitado, component, ports[i], name[i], signal=False)
@@ -2864,108 +3150,6 @@ def create_tapring_onchip(
         ptapring.add_ports(ref_.get_ports_list(), prefix=prefix)
     return component_snap_to_grid(ptapring)
 
-'''
-#No es necesario
-def __gen_fingers_macro(
-    pdk: MappedPDK,
-    rmult: int,
-    fingers: int,
-    length: float,
-    width: float,
-    poly_height: float,
-    sdlayer: str,
-    inter_finger_topmet: str,
-) -> Component:
-    """internal use: returns an array of fingers"""
-    length = pdk.snap_to_2xgrid(length)
-    width = pdk.snap_to_2xgrid(width)
-    poly_height = pdk.snap_to_2xgrid(poly_height)
-    # sizing_ref_viastack = via_stack(pdk, "active_diff", "met1")  This variable is not used
-    # figure out poly (gate) spacing: s/d metal doesnt overlap transistor, s/d min seperation criteria is met
-    sd_viaxdim = rmult * evaluate_bbox(via_stack(pdk, "active_diff", "met1"))[0]
-    poly_spacing = (
-        2 * pdk.get_grule("poly", "mcon")["min_separation"]
-        + pdk.get_grule("mcon")["width"]
-    )
-    poly_spacing = max(sd_viaxdim, poly_spacing)
-    met1_minsep = pdk.get_grule("met1")["min_separation"]
-    poly_spacing += met1_minsep if length < met1_minsep else 0
-    # create a single finger
-    finger = Component("finger")
-    gate = finger << rectangle(
-        size=(length, poly_height), layer=pdk.get_glayer("poly"), centered=True
-    )
-    sd_viaarr = via_array(
-        pdk,
-        "active_diff",
-        "met1",
-        size=(sd_viaxdim, width),
-        minus1=True,
-        lay_bottom=False,
-    ).copy()
-    interfinger_correction = via_array(
-        pdk,
-        "met1",
-        inter_finger_topmet,
-        size=(None, width),
-        lay_every_layer=True,
-        num_vias=(1, None),
-    )
-
-    ###########################################################################################################################################################
-    sd_viaarr_ref = finger << sd_viaarr
-    sd_viaarr_ref_met_top = (
-        finger << interfinger_correction
-    )  # Separate vias are added to save the ports of the inter_finger_topmetal metals.
-    sd_viaarr_ref_met_top.movex((poly_spacing + length) / 2)
-    sd_viaarr_ref.movex((poly_spacing + length) / 2)
-    finger.add_ports(gate.get_ports_list(), prefix="gate_")
-    finger.add_ports(sd_viaarr_ref.get_ports_list(), prefix="rightsd_")
-    finger.add_ports(
-        sd_viaarr_ref_met_top.get_ports_list(), prefix="rightsd_met_"
-    )  # Right inter_finger_topmet metal ports are saved
-    ###########################################################################################################################################################
-
-    # create finger array
-    fingerarray = prec_array(
-        finger,
-        columns=fingers,
-        rows=1,
-        spacing=(poly_spacing + length, 1),
-        absolute_spacing=True,
-    )
-    sd_via_ref_left = fingerarray << sd_viaarr
-    sd_via_ref_left_met_top = (
-        fingerarray << interfinger_correction
-    )  # A separate via array is added to store the ports of the inter_finger_topmet metals.
-    sd_via_ref_left.movex(0 - (poly_spacing + length) / 2)
-    sd_via_ref_left_met_top.movex(0 - (poly_spacing + length) / 2)
-    fingerarray.add_ports(sd_via_ref_left.get_ports_list(), prefix="leftsd_")
-    fingerarray.add_ports(
-        sd_via_ref_left_met_top.get_ports_list(), prefix="leftsd_met_"
-    )  # Left inter_finger_topmet metal ports are saved
-    # center finger array and add ports
-    centered_farray = Component()
-    fingerarray_ref_center = prec_ref_center(fingerarray)
-    centered_farray.add(fingerarray_ref_center)
-    centered_farray.add_ports(fingerarray_ref_center.get_ports_list())
-    # create diffusion and +doped region
-    multiplier = rename_ports_by_orientation(centered_farray)
-    diff_extra_enc = 2 * pdk.get_grule("mcon", "active_diff")["min_enclosure"]
-    diff_dims = (diff_extra_enc + evaluate_bbox(multiplier)[0], width)
-    diff = multiplier << rectangle(
-        size=diff_dims, layer=pdk.get_glayer("active_diff"), centered=True
-    )
-    sd_diff_ovhg = pdk.get_grule(sdlayer, "active_diff")["min_enclosure"]
-    sdlayer_dims = [dim + 2 * sd_diff_ovhg for dim in diff_dims]
-    sdlayer_ref = multiplier << rectangle(
-        size=sdlayer_dims, layer=pdk.get_glayer(sdlayer), centered=True
-    )
-    multiplier.add_ports(sdlayer_ref.get_ports_list(), prefix="plusdoped_")
-    multiplier.add_ports(diff.get_ports_list(), prefix="diff_")
-
-    return component_snap_to_grid(rename_ports_by_orientation(multiplier))
-'''
 
 # drain is above source
 def multiplier(
@@ -3253,7 +3437,7 @@ def multiplier(
     return component_snap_to_grid(rename_ports_by_orientation(multiplier))
 
 
-def layer_pin_and_label(pdk:MappedPDK, metal: str, label_or_pin: str):
+def layer_pin_and_label(pdk: MappedPDK, metal: str, label_or_pin: str):
     """pin and label dictionary
     returns the pin or label layer according to the metal specified
     args:
@@ -3281,7 +3465,7 @@ def layer_pin_and_label(pdk:MappedPDK, metal: str, label_or_pin: str):
             "met4": (70, 16),
             "met5": (71, 16),
         }
-    
+
     elif pdk is gf180:
         diccionario_label = {
             "met1": (34, 10),
@@ -3304,7 +3488,9 @@ def layer_pin_and_label(pdk:MappedPDK, metal: str, label_or_pin: str):
     return layer
 
 
-def pin_label_creation(pdk:MappedPDK, port, label, met, componente, signal: bool = False):
+def pin_label_creation(
+    pdk: MappedPDK, port, label, met, componente, signal: bool = False
+):
     """pin and/or label creator
     creates the pin layer (only in sky130) and/or label in a port
     args:
@@ -3351,9 +3537,9 @@ def filtrar_puertos(
     filtro,
     port_name: Optional[str] = None,
     signal: bool = False,
-    ):
+):
     """filtrar puertos
-    Function that allows you to save the ports indicated from one component to another    
+    Function that allows you to save the ports indicated from one component to another
     args:
     componente_original = Original component that contains all ports
     componente_filtrado = Destination component that saves the ports
@@ -3394,7 +3580,9 @@ def center_component_with_ports(pdk, component: Component) -> Component:
     ref = centered << component
 
     # Calcular el desplazamiento necesario para centrar
-    dx, dy = pdk.snap_to_2xgrid(-component.center[0]), pdk.snap_to_2xgrid(-component.center[1])
+    dx, dy = pdk.snap_to_2xgrid(-component.center[0]), pdk.snap_to_2xgrid(
+        -component.center[1]
+    )
     ref.move((dx, dy))  # Mueve la referencia al centro
 
     # Transformar y añadir los puertos
@@ -3406,18 +3594,18 @@ def center_component_with_ports(pdk, component: Component) -> Component:
     return centered
 
 
-def Boundary_layer(pdk:MappedPDK, componente=Component(), layer=(235, 4)) -> Component:
+def Boundary_layer(pdk: MappedPDK, componente=Component(), layer=(235, 4)) -> Component:
     """Boundary_layer
-    Function that creates the boundary layer   
+    Function that creates the boundary layer
     args:
     pdk = pdk to use
     componente = component to which the layer is added
     layer = optional to add a different layer
     """
     if pdk is sky130:
-        layer=(235, 4)
+        layer = (235, 4)
     elif pdk is gf180:
-        layer=(63,0)
+        layer = (0, 0)
     dimension = evaluate_bbox(componente)
     rectangle_boundary = rectangle(
         (dimension[0], dimension[1]), layer=layer, centered=True
@@ -3437,7 +3625,7 @@ def power_rails_placement(
     ports: Optional[bool] = True,
 ) -> Component:
     """power rails placemen
-    Function that creates rails in the component to VDD, VSS or specified signal   
+    Function that creates rails in the component to VDD, VSS or specified signal
     args:
     pdk = pdk to use
     componente = component to which the rail is added
@@ -3455,9 +3643,9 @@ def power_rails_placement(
                 raise ValueError(
                     "Each component must be conformed by rail label and rail number (left to right)"
                 )
-    
+
     size_component = evaluate_bbox(component)
-    
+
     if alignment == 0:
         rectangle_ref = rectangle(
             (size_component[0], width), layer=pdk.get_glayer("met4"), centered=True
@@ -3468,21 +3656,21 @@ def power_rails_placement(
         )
     else:
         raise ValueError("Alignment must be 0 or 1")
-    
+
     temporal_component = Component()
-   
+
     min_separation_met4 = pdk.get_grule("met4")["min_separation"]
     min_separation_met5 = pdk.get_grule("met5")["min_separation"]
-    
+
     L = size_component[0] if alignment == 1 else size_component[1]
-    
+
     W = width
-    
+
     if alignment == 1:
         s_min = min_separation_met5 if W < min_separation_met5 else W / 2
     else:
         s_min = min_separation_met4 if W < min_separation_met4 else W / 2
-    
+
     separation = W
 
     n = 1
@@ -3494,13 +3682,13 @@ def power_rails_placement(
         if s_n < separation:
             separation = s_n
         n += 1
-    
+
     n_rectangles = n * 2 + 1
     space = separation + width
     carril = list()
     rail_list = list()
     prefix_list = list()
-    #Espacio disponible de cada rail
+    # Espacio disponible de cada rail
     Available_space = dict()
     if specific_rail is not None:
         Available_space = {item[0]: [] for item in specific_rail}
@@ -3527,11 +3715,11 @@ def power_rails_placement(
         if prefijo is None:
             if i % 2 == 0:
                 prefijo = "VSS_" + str(i + 1) + "_"
-                prefijo_label = 'VSS'
+                prefijo_label = "VSS"
                 rail_list.append("VSS")
             else:
                 prefijo = "VDD_" + str(i + 1) + "_"
-                prefijo_label = 'VDD'
+                prefijo_label = "VDD"
                 rail_list.append("VDD")
         prefix_list.append(prefijo)
         temporal_name_save = Component()
@@ -3541,19 +3729,19 @@ def power_rails_placement(
             component.add_ports(temporal_name_save.ports)
         temporal_component.add_ports(temporal_name_save.ports)
         if alignment == 1 and label and prefijo_label not in added_prefix:
-            pin_label_creation(pdk, prefijo[0:-1], prefijo_label, 'met5', component)
+            pin_label_creation(pdk, prefijo[0:-1], prefijo_label, "met5", component)
             added_prefix.append(prefijo_label)
 
         elif alignment == 0 and label and prefijo_label not in added_prefix:
-            pin_label_creation(pdk, prefijo[0:-1], prefijo_label, 'met4', component)            
+            pin_label_creation(pdk, prefijo[0:-1], prefijo_label, "met4", component)
             added_prefix.append(prefijo_label)
 
-    #ports = [
+    # ports = [
     #    name
     #    for name in component.ports
     #    if "Ref1_B_drain_T" in name or "Ref1_B_source_T" in name
-    #]
-    #print(ports)
+    # ]
+    # print(ports)
     # Available spaces
     if route_list is not None:
         for i in range(len(rail_list)):
@@ -3573,7 +3761,11 @@ def power_rails_placement(
                 )
 
         # Via conection
-        min_separation_via = pdk.get_grule("via4")["min_separation"] if alignment == 1 else pdk.get_grule("via3")["min_separation"]
+        min_separation_via = (
+            pdk.get_grule("via4")["min_separation"]
+            if alignment == 1
+            else pdk.get_grule("via3")["min_separation"]
+        )
         for route in route_list:
             if (len(route)) != 2:
                 raise ValueError(
@@ -3581,17 +3773,25 @@ def power_rails_placement(
                 )
             if route[1] not in Available_space:
                 raise ValueError("The rail name must be in the specific rail list")
-            
+
             port_E = route[0] + "E"
             port_W = route[0] + "W"
             port_N = route[0] + "N"
             port_S = route[0] + "S"
-            #via creation
+            # via creation
             if alignment == 1:
-                via_ref = via_array(pdk, "met4", "met5", size=(width,component.ports[port_E].width))
+                via_ref = via_array(
+                    pdk, "met4", "met5", size=(width, component.ports[port_E].width)
+                )
             else:
-                via_ref = via_array(pdk, "met3", "met4", size=(component.ports[port_N].width, width))
-            size_via_ref = evaluate_bbox(via_ref)[0] if alignment == 1 else evaluate_bbox(via_ref)[1]
+                via_ref = via_array(
+                    pdk, "met3", "met4", size=(component.ports[port_N].width, width)
+                )
+            size_via_ref = (
+                evaluate_bbox(via_ref)[0]
+                if alignment == 1
+                else evaluate_bbox(via_ref)[1]
+            )
             separation = size_via_ref + min_separation_via
             # ports = [name for name in component.ports if 'Ref1_A_drain_T' in name]
             # print(ports)
@@ -3607,25 +3807,45 @@ def power_rails_placement(
                 ]
 
             # Espacio disponible en la ruta donde se van a agregar las vias
-            space_available_route = abs(range_ports_available[1] - range_ports_available[0])
+            space_available_route = abs(
+                range_ports_available[1] - range_ports_available[0]
+            )
             if space_available_route < separation:
                 raise ValueError("There is not enough space to add the via")
             vias = list()
             connected = False
             for i in range(len(Available_space[route[1]])):
                 if alignment == 1:
-                    movement_x = Available_space[route[1]][i][0] + size_via_ref/2   #centro horizontal de la ruta
-                    movement_y = (component.ports[port_E].center[1])                #base de cada rail que se conecta con la ruta
-                    if range_ports_available[0] < movement_x < range_ports_available[1] or range_ports_available[1] < movement_x < range_ports_available[0]:
+                    movement_x = (
+                        Available_space[route[1]][i][0] + size_via_ref / 2
+                    )  # centro horizontal de la ruta
+                    movement_y = component.ports[port_E].center[
+                        1
+                    ]  # base de cada rail que se conecta con la ruta
+                    if (
+                        range_ports_available[0] < movement_x < range_ports_available[1]
+                        or range_ports_available[1]
+                        < movement_x
+                        < range_ports_available[0]
+                    ):
                         vias.append(component << via_ref)
                         vias[-1].movex(movement_x).movey(movement_y)
                         connected = True
                 else:
-                    movement_x = (component.ports[port_S].center[0])                #centro vertical de la ruta
-                    movement_y = Available_space[route[1]][i][0] + size_via_ref/2   #base de cada rail que se conecta con la ruta
-                    if range_ports_available[0] < movement_y < range_ports_available[1] or range_ports_available[1] < movement_y < range_ports_available[0]:
+                    movement_x = component.ports[port_S].center[
+                        0
+                    ]  # centro vertical de la ruta
+                    movement_y = (
+                        Available_space[route[1]][i][0] + size_via_ref / 2
+                    )  # base de cada rail que se conecta con la ruta
+                    if (
+                        range_ports_available[0] < movement_y < range_ports_available[1]
+                        or range_ports_available[1]
+                        < movement_y
+                        < range_ports_available[0]
+                    ):
                         vias.append(component << via_ref)
                         vias[-1].movex(movement_x).movey(movement_y)
                         connected = True
             if connected == False:
-                print(route[0] + ' was not connected')
+                print(route[0] + " was not connected")
