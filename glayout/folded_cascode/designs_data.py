@@ -1,4 +1,7 @@
 # Diseno 4
+
+def get_data_design4():
+    return
 array_m1 = [[1, 2]]
 array_m2 = [[1, 2]]
 array_m3 = [[2, 1, 3]]

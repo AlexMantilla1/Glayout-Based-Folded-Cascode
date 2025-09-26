@@ -39,6 +39,9 @@ from folded_cascode_core import generator_core
 import gdsfactory as gf
 
 
+from designs_data import get_data_design4
+
+
 # Numerical functions
 from decimal import Decimal
 from typing import Literal, Optional, Union
@@ -229,11 +232,14 @@ def OTA_Main(pdk: MappedPDK, width_route: float = 0) -> Component:
     return component_snap_to_grid(component)
 
 
-Test = OTA_Main(gf180, 1)
 
-Test_with_labels = place_labels(Test, labels_dict)
-Test.name = "error_amplifier_N_input_v1"
-Test.write_gds("error_amplifier_N_input_v1_pcells.gds")
-ports = [name for name in Test.ports if "V" in name]
-print(ports)
-Test.show()
+if __name__ == "__main__":
+    desing_info = get_data_design4()
+    Test = OTA_Main(gf180, 1, desing_info)
+
+    Test_with_labels = place_labels(Test, labels_dict)
+    Test.name = "error_amplifier_N_input_v1"
+    Test.write_gds("error_amplifier_N_input_v1_pcells.gds")
+    ports = [name for name in Test.ports if "V" in name]
+    print(ports)
+    Test.show()
