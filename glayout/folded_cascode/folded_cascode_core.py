@@ -42,28 +42,22 @@ from custom_utils import filtrar_puertos, pin_label_creation, interdigitado_plac
 from custom_utils import center_component_with_ports
 from custom_utils import Boundary_layer, power_rails_placement
 
+from designs_data import get_data_design4
 
-def place_cascode(pdk: MappedPDK, true_size: int = 0) -> Component:
+
+def place_cascode(pdk: MappedPDK, arrays, info, true_size: int = 0) -> Component:
     place_cascode = Component()
 
-    # Use of second order primitive
-    # We define the parameters of our primitive
+    casc_dum_down = (len(arrays[0][0])+2) * 2 + 2*len(arrays[0])
+    casc_dum_up = (len(arrays[1][0])+2) * 2 + 2*len(arrays[1])
 
-    m1 = {'type':'pfet', 'name':'M3_M4', 'width':2.00, 'length':1.00, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'width_route_mult':1, 'lvt':True}
-    m2 = {'type':'pfet', 'name':'M5_M6', 'width':2.00, 'length':1.00, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'width_route_mult':1, 'lvt':True}
+    print(f'Dummys cascode up = {casc_dum_up}')
+    print(f'Dummys cascode down = {casc_dum_down}')
 
-    array = [[[2,1],[1,2]], [[1,2]]]
-    
-    casc_dum_down = (len(array[0][0])+2) * 2 + 2*len(array[0])
-    casc_dum_up = (len(array[1][0])+2) * 2 + 2*len(array[1])
-
-    print(f'Casc dum up = {casc_dum_up}')
-    print(f'Casc dum down = {casc_dum_down}')
-
-    devices_info = [m1,m2]
+    #devices_info = [m1,m2]
 
     # We call the cascode primitive 
-    Cascode_call = Cascode(pdk,devices_info,array, 0, true_size) #No pin, yes true size
+    Cascode_call = Cascode(pdk,info,arrays, 0, true_size) #No pin, yes true size
 
     
     Cascode_component = place_cascode << Cascode_call
@@ -94,29 +88,17 @@ def place_cascode(pdk: MappedPDK, true_size: int = 0) -> Component:
         filtrar_puertos(place_cascode_centered, component, 'CASC_VS2_T_Ver_L_', 'VS2_T_Ver_L_')     #Source voltage from current mirror (Right Transistor)
     return component
 
-def place_bi_current(pdk: MappedPDK, true_size: int = 0) -> Component:
+def place_bi_current(pdk: MappedPDK, arrays, info, true_size: int = 0) -> Component:
     place_bi_current = Component()
 
-    # Use of second order primitive
-    
-    m1 = {'type':'nfet', 'name':'M9_M10', 'width':2.00, 'length':2.00, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'width_route_mult':1, 'lvt':False}
-    m2 = {'type':'nfet', 'name':'M7_M8', 'width':2.00, 'length':2.00, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'width_route_mult':1, 'lvt':False}
-    #m1 son los que van a vss
-    array = array = [[[1,2],[2,1]],
-                     [[1,2],[2,1]]
-                      ]
+    bi_cur_dum_down = (len(arrays[0][0])+2) * 2 + 2*len(arrays[0])
+    bi_cur_dum_up = (len(arrays[1][0])+2) * 2 + 2*len(arrays[1])
 
-    bi_cur_dum_down = (len(array[0][0])+2) * 2 + 2*len(array[0])
-    bi_cur_dum_up = (len(array[1][0])+2) * 2 + 2*len(array[1])
-
-    print(f'bi_cur_dum_up = {bi_cur_dum_up}')
-    print(f'bi_cur_dum_down = {bi_cur_dum_down}')
-
-
-    devices_info = [m1,m2]
+    print(f'Dummys bi current up = {bi_cur_dum_up}')
+    print(f'Dummys bi current down = {bi_cur_dum_down}')
 
     # We call the Bi_current primitive 
-    Bi_current_call, size_cs1, size_cs2 = Bi_current_source(pdk,devices_info,array, 0, 1)
+    Bi_current_call, size_cs1, size_cs2 = Bi_current_source(pdk,info,arrays, 0, 1)
 
     Bi_current_component = place_bi_current << Bi_current_call
 
@@ -167,33 +149,19 @@ def place_bi_current(pdk: MappedPDK, true_size: int = 0) -> Component:
         filtrar_puertos(place_bi_current_centered, component, 'BIC_VS2_T_Ver_L_', 'VS2_T_Ver_L_')
     return component, size_cs1, size_cs2
 
-def place_par_bias(pdk: MappedPDK, true_size: int = 0) -> Component:
+def place_par_bias(pdk: MappedPDK, arrays, info, true_size: int = 0) -> Component:
     place_par_bias = Component()
 
     # Use of second order primitive
 
-    m1 = {'type':'nfet', 'name':'M1_M2', 'width':2.00, 'length':4.00, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'width_route_mult':1, 'lvt':False}
-    m2 = {'type':'nfet', 'name':'M11', 'width':2.00, 'length':2.00, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'width_route_mult':1, 'lvt':False}
+    par = (len(arrays[0][0])+2) * 2 + 2*len(arrays[0])
+    bias = (len(arrays[1][0])+2) * 2 + 2*len(arrays[1])
 
-    #Par bias
-    array = [[
-   	         [1,2,2,1,1,2,2,1,1,2,2,1,1,2,2,1,1,2,2,1],
-             [2,1,1,2,2,1,1,2,2,1,1,2,2,1,1,2,2,1,1,2],
-             [1,2,2,1,1,2,2,1,1,2,2,1,1,2,2,1,1,2,2,1]
-             ]
-            ,[[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-              ]] #
-
-    par = (len(array[0][0])+2) * 2 + 2*len(array[0])
-    bias = (len(array[1][0])+2) * 2 + 2*len(array[1])
-
-    print(f'Par = {par}')
-    print(f'Bias = {bias}')
-
-    devices_info = [m1,m2]
+    print(f'Dummys Par = {par}')
+    print(f'Dummys Bias = {bias}')
 
     # We call the Bi_current primitive 
-    Par_bias_call, size_P1, size_T1 = Pair_bias(pdk,devices_info,array, 0, true_size)
+    Par_bias_call, size_P1, size_T1 = Pair_bias(pdk,info,arrays, 0, true_size)
 
     Par_bias_component = place_par_bias << Par_bias_call
 
@@ -240,14 +208,20 @@ def place_par_bias(pdk: MappedPDK, true_size: int = 0) -> Component:
         filtrar_puertos(place_par_bias_centered, component, 'PBI_T_VS_T_Ver_L_', 'T_VS_T_Ver_L_')
         filtrar_puertos(place_par_bias_centered, component, 'PBI_T_VS_T_Ver_R_', 'T_VS_T_Ver_R_')
 
-    return component, devices_info
+    return component, info
 
-def OTA_Core(pdk: MappedPDK) -> Component:
+def OTA_Core(pdk: MappedPDK, arrays, info) -> Component:
     OTA_core = Component()
 
-    BI1, size_c1, size_c2 = place_bi_current(pdk, 1)
-    CAS1= place_cascode(pdk, 1)
-    PB1, type_par = place_par_bias(pdk, 1)
+    arrays_bi_current = arrays[1]
+    arrays_par_bias = arrays[0]
+    arrays_cascode = arrays[2]
+    info_bi_current = [info[2], info[3]]
+    info_par_bias = [info[0], info[1]]
+    info_cascode = [info[4], info[5]]
+    BI1, size_c1, size_c2 = place_bi_current(pdk, arrays_bi_current, info_bi_current, 1)
+    CAS1= place_cascode(pdk, arrays_cascode, info_cascode, 1)
+    PB1, type_par = place_par_bias(pdk, arrays_par_bias, info_par_bias, 1)
 
     TOP_BI1 = OTA_core << BI1
     TOP_CAS1 = OTA_core << CAS1
@@ -454,8 +428,8 @@ def OTA_Core(pdk: MappedPDK) -> Component:
 
     return component_snap_to_grid(component), route_list
 
-def generator_core():
-    Test, route_list = OTA_Core(gf180)
+def generator_core(arrays, info):
+    Test, route_list = OTA_Core(gf180, arrays, info)
     #Test.name = "error_amplifier_N_input_core"
     #Test.write_gds("error_amplifier_N_input_core_pcells.gds")
     #Test.show()
@@ -465,4 +439,7 @@ def generator_core():
 
 if __name__ == "__main__":
     # If called directly call main function
-    generator_core()
+    design_info = get_data_design4()
+    arrays = design_info['arrays_core']
+    info = design_info['info_core']
+    generator_core(arrays, info)

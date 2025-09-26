@@ -47,6 +47,7 @@ from custom_utils import (
     Boundary_layer,
     power_rails_placement
 )
+from designs_data import get_data_design4
 
 import gdsfactory as gf
 
@@ -582,23 +583,14 @@ def Biasing_generator(pdk,
 
     return component_snap_to_grid(component), route_list_hor
 
-def generator_bias():
-    # Information of the transistors
-    array_m1 = [[1,2]]
-    array_m2 = [[1,2]]
-    array_m3 = [[2,1,3]]
-    array_m4 = [[1,2]]
-    array_m5 = [[2,1]]
-    array_m6 = [[1,2,3]]
-    array_m7 = [[3,3,2,2,1,1,1,1,2,2,3,3,3,3,2,2,1,1,1,1,2,2,3,3,3,3,2,2,1,1,1,1,2,2,3,3,3,3,2,2,1,1,1,1,2,2,3,3]]
-
-    dum_m1 = (len(array_m1[0])+2)*2 + 2
-    dum_m2 = (len(array_m2[0])+2)*2 + 2
-    dum_m3 = (len(array_m3[0])+2)*2 + 2
-    dum_m4 = (len(array_m4[0])+2)*2 + 2
-    dum_m5 = (len(array_m5[0])+2)*2 + 2
-    dum_m6 = (len(array_m6[0])+2)*2 + 2
-    dum_m7 = (len(array_m7[0])+2)*2 + 4
+def generator_bias(arrays, info):
+    dum_m1 = (len(arrays[0][0])+2)*2 + 2
+    dum_m2 = (len(arrays[1][0])+2)*2 + 2
+    dum_m3 = (len(arrays[2][0])+2)*2 + 2
+    dum_m4 = (len(arrays[3][0])+2)*2 + 2
+    dum_m5 = (len(arrays[4][0])+2)*2 + 2
+    dum_m6 = (len(arrays[5][0])+2)*2 + 2
+    dum_m7 = (len(arrays[6][0])+2)*2 + 4
     
     print(f'dummys M1 = {dum_m1}')
     print(f'dummys M2 = {dum_m2}')
@@ -608,18 +600,7 @@ def generator_bias():
     print(f'dummys M6 = {dum_m6}')
     print(f'dummys M7 = {dum_m7}')
 
-    devices_info_m1 = {'type':'nfet', 'name':'M1', 'width':1.00, 'length':2, 'width_route_mult':1, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'lvt':False}
-    devices_info_m2 = {'type':'nfet', 'name':'M1', 'width':0.50, 'length':2, 'width_route_mult':1, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'lvt':False}
-    devices_info_m3 = {'type':'pfet', 'name':'M1', 'width':1.00, 'length':2, 'width_route_mult':1, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'lvt':False}
-    devices_info_m4 = {'type':'pfet', 'name':'M1', 'width':1.00, 'length':2, 'width_route_mult':1, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'lvt':False}
-    devices_info_m5 = {'type':'pfet', 'name':'M1', 'width':1.00, 'length':2, 'width_route_mult':1, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'lvt':False}
-    devices_info_m6 = {'type':'nfet', 'name':'M1', 'width':0.50, 'length':2, 'width_route_mult':1, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'lvt':False}
-    devices_info_m7 = {'type':'nfet', 'name':'M1', 'width':2.00, 'length':2, 'width_route_mult':1, 'fingers':1, 'with_substrate_tap':False, 'with_tie':True, 'with_dummy':True, 'lvt':False}
-
-    devices_info = [devices_info_m1, devices_info_m2, devices_info_m3, devices_info_m4, devices_info_m5, devices_info_m6, devices_info_m7]
-    arrays_info = [array_m1, array_m2, array_m3, array_m4, array_m5, array_m6, array_m7]
-
-    bias_core, rails_route_list = Biasing_generator(gf180, devices_info, arrays_info, width_route=1, offset_drc = 0.00)
+    bias_core, rails_route_list = Biasing_generator(gf180, info, arrays, width_route=1, offset_drc = 0.00)
     # Display the current mirror layout at Klayout:
     #bias_core.name = "error_amplifier_N_input_bias"
     #bias_core.write_gds("error_amplifier_N_input_bias_pcells.gds")
@@ -630,4 +611,8 @@ def generator_bias():
 
 if __name__ == "__main__":
     # If called directly call main function
-    generator_bias()
+    design_info = get_data_design4()
+    arrays = design_info['arrays_bias']
+    info = design_info['info_bias']
+
+    generator_bias(arrays, info)
