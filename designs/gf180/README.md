@@ -69,54 +69,54 @@ The table below summarizes the key performance metrics obtained from pre and pos
     <tr>
       <td align="center">UGBW</td>
       <td align="center">[MHz]</td>
-      <td align="center">--</td>
-      <td align="center">1</td>
-      <td align="center">5</td>
+      <td align="center">10</td>
       <td align="center">--</td>
       <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
+      <td align="center">11.1</td>
+      <td align="center">26</td>
+      <td align="center">53.9</td>
+      <td align="center">10.1</td>
+      <td align="center">20.8</td>
+      <td align="center">47</td>
     </tr>
     <tr>
       <td align="center">Av</td>
       <td align="center">[dB]</td>
+      <td align="center">70</td>
       <td align="center">--</td>
       <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
+      <td align="center">75.9</td>
+      <td align="center">81</td>
+      <td align="center">82.8</td>
+      <td align="center">75.8</td>
+      <td align="center">80.6</td>
+      <td align="center">82.7</td>
     </tr>
     <tr>
       <td align="center">PM</td>
       <td align="center">[°]</td>
+      <td align="center">50</td>
       <td align="center">--</td>
       <td align="center">--</td>
-      <td align="center">80</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
+      <td align="center">72.1</td>
+      <td align="center">73</td>
+      <td align="center">75.7</td>
+      <td align="center">57.8</td>
+      <td align="center">60.2</td>
+      <td align="center">63.9</td>
     </tr>
     <tr>
-      <td align="center">Voff</td>
+      <td align="center">Voff(3Sig)</td>
       <td align="center">[mV]</td>
-      <td align="center">-10</td>
+      <td align="center">--</td>
       <td align="center">--</td>
       <td align="center">10</td>
       <td align="center">--</td>
       <td align="center">--</td>
+      <td align="center">14.1</td>
       <td align="center">--</td>
       <td align="center">--</td>
-      <td align="center">--</td>
-      <td align="center">--</td>
+      <td align="center">3.5</td>
     </tr>
     <tr>
       <td align="center">CL</td>
