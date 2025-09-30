@@ -66,8 +66,6 @@ All design files should be opened this way, except for the CACE templates, which
 
 ### 1.3. Open the CACE Templates
 
-### 2.1. Opening CACE Simulation Files
-
 To open the CACE simulation templates, xschem must be executed from within the corresponding project directory:
 
 ```bash
@@ -117,7 +115,7 @@ while the biasing circuit is presented as:
 
 The concept behind this 4 versions is that the same circuit can be designed for different applications, requesting high gain and low offset, or requesting wide-band signal amplification. However, the layout structure may not change, even if devices dimentions change, placement and signal work may stay the same.
 
-
+## 3. Results
 
 The table below summarizes the key performance metrics obtained from pre and post-layout simulations for V1 design.
 
