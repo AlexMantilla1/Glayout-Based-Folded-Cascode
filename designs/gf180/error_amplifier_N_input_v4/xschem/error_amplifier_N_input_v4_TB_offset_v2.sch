@@ -4,76 +4,76 @@ K {}
 V {}
 S {}
 E {}
-N 270 -140 270 -130 {lab=GND}
-N 270 -230 270 -200 {lab=Vref}
-N 110 -140 110 -130 {lab=GND}
-N 110 -230 110 -200 {lab=VDD}
-N 190 -140 190 -130 {lab=GND}
-N 190 -230 190 -200 {lab=VSS}
-N 990 -190 990 -130 {
+N 240 -60 240 -50 {lab=GND}
+N 240 -150 240 -120 {lab=Vref}
+N 80 -60 80 -50 {lab=GND}
+N 80 -150 80 -120 {lab=VDD}
+N 160 -60 160 -50 {lab=GND}
+N 160 -150 160 -120 {lab=VSS}
+N 960 -110 960 -50 {
 lab=GND}
-N 900 -300 990 -300 {
+N 870 -220 960 -220 {
 lab=Vout}
-N 990 -300 990 -250 {
+N 960 -220 960 -170 {
 lab=Vout}
-N 600 -330 700 -330 {
+N 570 -250 670 -250 {
 lab=#net1}
-N 700 -330 720 -330 {lab=#net1}
-N 350 -140 350 -130 {lab=GND}
-N 350 -230 350 -200 {lab=Vin}
-N 820 -420 820 -400 {lab=GND}
-N 860 -430 860 -410 {lab=GND}
-N 820 -410 860 -410 {lab=GND}
-N 950 -470 950 -300 {lab=Vout}
-N 860 -470 950 -470 {lab=Vout}
-N 600 -480 600 -330 {lab=#net1}
-N 600 -480 670 -480 {lab=#net1}
-N 730 -480 820 -480 {lab=#net2}
-N 600 -280 720 -280 {lab=Vin}
-C {devices/vsource.sym} 270 -170 0 0 {name=V1 value=\{Vref\}}
-C {devices/gnd.sym} 270 -130 0 0 {name=l2 lab=GND}
-C {devices/lab_wire.sym} 270 -230 0 0 {name=p1 sig_type=std_logic lab=Vref}
-C {devices/noconn.sym} 830 -240 0 1 {name=l4}
-C {devices/lab_wire.sym} 790 -180 0 0 {name=p7 sig_type=std_logic lab=VSS}
-C {devices/lab_wire.sym} 790 -200 0 0 {name=p8 sig_type=std_logic lab=VDD}
-C {devices/vsource.sym} 110 -170 0 0 {name=V8 value=\{VDD\}}
-C {devices/gnd.sym} 110 -130 0 0 {name=l5 lab=GND}
-C {devices/lab_wire.sym} 110 -230 0 0 {name=p9 sig_type=std_logic lab=VDD}
-C {devices/vsource.sym} 190 -170 0 0 {name=V5 value=\{VSS\}}
-C {devices/gnd.sym} 190 -130 0 0 {name=l6 lab=GND}
-C {devices/lab_wire.sym} 190 -230 0 0 {name=p10 sig_type=std_logic lab=VSS}
-C {devices/capa.sym} 990 -220 0 0 {name=C1
+N 670 -250 690 -250 {lab=#net1}
+N 320 -60 320 -50 {lab=GND}
+N 320 -150 320 -120 {lab=Vin}
+N 790 -340 790 -320 {lab=GND}
+N 830 -350 830 -330 {lab=GND}
+N 790 -330 830 -330 {lab=GND}
+N 920 -390 920 -220 {lab=Vout}
+N 830 -390 920 -390 {lab=Vout}
+N 570 -400 570 -250 {lab=#net1}
+N 570 -400 640 -400 {lab=#net1}
+N 700 -400 790 -400 {lab=#net2}
+N 570 -200 690 -200 {lab=Vin}
+C {devices/vsource.sym} 240 -90 0 0 {name=V1 value=\{Vref\}}
+C {devices/gnd.sym} 240 -50 0 0 {name=l2 lab=GND}
+C {devices/lab_wire.sym} 240 -150 0 0 {name=p1 sig_type=std_logic lab=Vref}
+C {devices/noconn.sym} 800 -160 0 1 {name=l4}
+C {devices/lab_wire.sym} 760 -100 0 0 {name=p7 sig_type=std_logic lab=VSS}
+C {devices/lab_wire.sym} 760 -120 0 0 {name=p8 sig_type=std_logic lab=VDD}
+C {devices/vsource.sym} 80 -90 0 0 {name=V8 value=\{VDD\}}
+C {devices/gnd.sym} 80 -50 0 0 {name=l5 lab=GND}
+C {devices/lab_wire.sym} 80 -150 0 0 {name=p9 sig_type=std_logic lab=VDD}
+C {devices/vsource.sym} 160 -90 0 0 {name=V5 value=\{VSS\}}
+C {devices/gnd.sym} 160 -50 0 0 {name=l6 lab=GND}
+C {devices/lab_wire.sym} 160 -150 0 0 {name=p10 sig_type=std_logic lab=VSS}
+C {devices/capa.sym} 960 -140 0 0 {name=C1
 m=1
-value=2p
+value=5p
 footprint=1206
 device="ceramic capacitor"}
-C {devices/vsource.sym} 350 -170 0 0 {name=Vin value=\{Vin\}}
-C {devices/lab_wire.sym} 990 -300 0 0 {name=p12 sig_type=std_logic lab=Vout}
-C {devices/gnd.sym} 820 -400 0 0 {name=l8 lab=GND}
-C {devices/code_shown.sym} 70 -580 0 0 {name=MODELS only_toplevel=true
+C {devices/vsource.sym} 320 -90 0 0 {name=Vin value=\{Vin\}}
+C {devices/lab_wire.sym} 960 -220 0 0 {name=p12 sig_type=std_logic lab=Vout}
+C {devices/gnd.sym} 790 -320 0 0 {name=l8 lab=GND}
+C {devices/code_shown.sym} 40 -500 0 0 {name=MODELS only_toplevel=true
 format="tcleval( @value )"
 value="
 .include $::180MCU_MODELS/design.ngspice
 .lib $::180MCU_MODELS/sm141064.ngspice statistical
 "}
-C {devices/code_shown.sym} 570 -630 0 0 {name=Voltage_sources only_toplevel=true
+C {devices/code_shown.sym} 540 -550 0 0 {name=Voltage_sources only_toplevel=true
 value="
 .param VDD = 3.3
 .param VSS = 0
 .param Vref = 1.2
 .param Vin = 1.2
 "}
-C {devices/lab_wire.sym} 790 -220 0 0 {name=p4 sig_type=std_logic lab=Vref}
-C {devices/gnd.sym} 350 -130 0 0 {name=l1 lab=GND}
-C {devices/lab_wire.sym} 350 -230 0 0 {name=p2 sig_type=std_logic lab=Vin}
-C {devices/lab_wire.sym} 600 -280 0 0 {name=p3 sig_type=std_logic lab=Vin}
-C {simulator_commands.sym} 1010 -560 0 0 {name=COMMANDS1
+C {devices/lab_wire.sym} 760 -140 0 0 {name=p4 sig_type=std_logic lab=Vref}
+C {devices/gnd.sym} 320 -50 0 0 {name=l1 lab=GND}
+C {devices/lab_wire.sym} 320 -150 0 0 {name=p2 sig_type=std_logic lab=Vin}
+C {devices/lab_wire.sym} 570 -200 0 0 {name=p3 sig_type=std_logic lab=Vin}
+C {simulator_commands.sym} 980 -480 0 0 {name=COMMANDS1
 simulator=ngspice
 only_toplevel=false 
 value="
 
 *.param TEMPGAUSS = agauss(40, 30, 1)
-*.option terror_amplifier_N_input_v3p = 'TEMPGAUSS'
+*.option terror_amplifier_N_input_v4p = 'TEMPGAUSS'
 
 .param sw_stat_global = 0
 .param sw_stat_mismatch = 1
@@ -137,13 +137,13 @@ echo '----------------------------------------'
 
 .endc
 "}
-C {devices/launcher.sym} 190 -440 0 0 {name=h3
+C {gf180/error_amplifier_N_input_v4/xschem/error_amplifier_N_input_v4.sym} 780 -220 0 0 {name=x1}
+C {devices/launcher.sym} 160 -360 0 0 {name=h3
 descr="Save & Netlist & sim" 
 tclcommand="xschem save; xschem netlist; xschem simulate"}
-C {launcher.sym} 190 -380 0 0 {name=h2
+C {launcher.sym} 160 -300 0 0 {name=h2
 descr="Annotate OP"
 tclcommand="set show_hidden_texts 1; xschem annotate_op"}
-C {vcvs.sym} 820 -450 0 1 {name=E1 value=1}
-C {devices/gnd.sym} 990 -130 0 0 {name=l3 lab=GND}
-C {devices/vsource.sym} 700 -480 1 0 {name=V2 value=0.45}
-C {gf180/error_amplifier_N_input_v4/xschem/error_amplifier_N_input_v4.sym} 810 -300 0 0 {name=x1}
+C {vcvs.sym} 790 -370 0 1 {name=E1 value=1}
+C {devices/gnd.sym} 960 -50 0 0 {name=l3 lab=GND}
+C {devices/vsource.sym} 670 -400 1 0 {name=V2 value=0.45}

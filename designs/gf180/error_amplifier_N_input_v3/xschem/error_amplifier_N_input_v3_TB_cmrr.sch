@@ -50,7 +50,7 @@ C {devices/lab_wire.sym} 790 -220 0 0 {name=p5 sig_type=std_logic lab=VSS}
 C {devices/lab_wire.sym} 790 -240 0 0 {name=p6 sig_type=std_logic lab=VDD}
 C {devices/capa.sym} 990 -260 0 0 {name=C2
 m=1
-value=1p
+value=2p
 footprint=1206
 device="ceramic capacitor"}
 C {devices/vsource.sym} 300 -130 0 0 {name=V2 value="\{Vin\} AC 1"}
@@ -265,7 +265,7 @@ value="
 .param Vref = 1.2
 .param Vin = 1.2
 "}
-C {devices/vsource.sym} 140 -130 0 0 {name=V3 value=\{VDD\}}
+C {devices/vsource.sym} 140 -130 0 0 {name=V8 value=\{VDD\}}
 C {devices/gnd.sym} 140 -90 0 0 {name=l10 lab=GND}
 C {devices/lab_wire.sym} 140 -190 0 0 {name=p9 sig_type=std_logic lab=VDD}
 C {devices/vsource.sym} 220 -130 0 0 {name=V4 value=\{VSS\}}
@@ -279,10 +279,10 @@ C {devices/gnd.sym} 380 -90 0 0 {name=l14 lab=GND
 value=\{Vref\}}
 C {devices/lab_wire.sym} 380 -190 0 0 {name=p18 sig_type=std_logic lab=Vref
 value=\{Vref\}}
-C {gf180/error_amplifier_N_input_v3/xschem/error_amplifier_N_input_v3.sym} 810 -340 0 0 {name=x1}
 C {devices/launcher.sym} 150 -470 0 0 {name=h3
 descr="Save & Netlist & sim" 
 tclcommand="xschem save; xschem netlist; xschem simulate"}
 C {launcher.sym} 150 -410 0 0 {name=h2
 descr="Annotate OP"
 tclcommand="set show_hidden_texts 1; xschem annotate_op"}
+C {gf180/error_amplifier_N_input_v3/xschem/error_amplifier_N_input_v3.sym} 810 -340 0 0 {name=x1}

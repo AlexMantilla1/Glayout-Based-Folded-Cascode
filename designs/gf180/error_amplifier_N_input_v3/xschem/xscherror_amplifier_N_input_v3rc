@@ -1,7 +1,0 @@
-# Source the PDK xscherror_amplifier_N_input_v3rc file
-if {![info exists PDK]} {
-    source $env(PDK_ROOT)/$env(PDK)/libs.tech/xscherror_amplifier_N_input_v3/xscherror_amplifier_N_input_v3rc
-}
-
-# Add current directory to xscherror_amplifier_N_input_v3 library path
-append XSCHEM_LIBRARY_PATH :[file dirname [info script]] 

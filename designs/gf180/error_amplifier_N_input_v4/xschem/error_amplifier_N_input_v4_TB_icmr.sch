@@ -4,22 +4,6 @@ K {}
 V {}
 S {}
 E {}
-T {The measurerror_amplifier_N_input_v4ent for this test must be checked. 
-
-For this test we define the ICMR as the range
-for Vin where the opamps has enough gain to
-keep the output at 0.9V (param Vout_CM).
-
-Here we need to measure the point where the
-output is not 0.9V (param Vout_CM) anymore.
-We can use the 1% or 2% error criteria for this. 
-However, measurerror_amplifier_N_input_v4ent is not okay today.
-
-2025-07-14. -Alex.
-
-Fixed.
-
-2025-07-17. -Julian.} 1230 -840 0 0 0.4 0.4 {}
 N 140 -130 140 -110 {
 lab=GND}
 N 140 -230 140 -190 {
@@ -290,7 +274,7 @@ C {lab_pin.sym} 850 -170 2 1 {name=p9 sig_type=std_logic lab=VSS}
 C {lab_pin.sym} 600 -270 2 1 {name=p10 sig_type=std_logic lab=Vin}
 C {capa.sym} 1170 -190 0 0 {name=C1
 m=1
-value=1p
+value=5p
 footprint=1206
 device="ceramic capacitor"}
 C {lab_pin.sym} 1170 -80 2 1 {name=p1 sig_type=std_logic lab=VSS}

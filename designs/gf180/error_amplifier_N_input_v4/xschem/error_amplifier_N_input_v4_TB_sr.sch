@@ -280,7 +280,7 @@ plot Vout Vin
 C {devices/vsource.sym} 280 -130 0 0 {name=V5 value=\{Vref\}}
 C {devices/gnd.sym} 280 -90 0 0 {name=l10 lab=GND}
 C {devices/lab_wire.sym} 280 -190 0 0 {name=p4 sig_type=std_logic lab=Vref}
-C {gf180/error_amplifier_N_input_v3/xschem/error_amplifier_N_input_v3.sym} 800 -280 0 0 {name=x1}
+C {gf180/error_amplifier_N_input_v4/xschem/error_amplifier_N_input_v4.sym} 800 -280 0 0 {name=x1}
 C {devices/launcher.sym} 180 -420 0 0 {name=h3
 descr="Save & Netlist & sim" 
 tclcommand="xschem save; xschem netlist; xschem simulate"}

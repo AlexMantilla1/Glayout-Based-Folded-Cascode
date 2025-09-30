@@ -61,7 +61,7 @@ C {devices/lab_wire.sym} 1010 -340 0 0 {name=p12 sig_type=std_logic lab=VSS}
 C {devices/lab_wire.sym} 1010 -360 0 0 {name=p13 sig_type=std_logic lab=VDD}
 C {devices/capa.sym} 1210 -380 0 0 {name=C4
 m=1
-value=2p
+value=5p
 footprint=1206
 device="ceramic capacitor"}
 C {devices/vsource.sym} 280 -240 0 0 {name=V6 value=\{Vin\}}
@@ -92,7 +92,7 @@ simulator=ngspice
 only_toplevel=false 
 value="
 .control
-*.option temp = 125
+*.option temp=125
 save all
 
 ** OP simulation
@@ -304,10 +304,10 @@ C {devices/gnd.sym} 1080 -60 0 0 {name=l4 lab=GND}
 C {devices/lab_wire.sym} 1080 -210 0 0 {name=p3 sig_type=std_logic lab=Vo2}
 C {devices/vsource.sym} 1010 -210 1 0 {name=V10 value=\{Vout_CM\}}
 C {devices/vsource.sym} 950 -210 3 1 {name=V3 value=\{Vin\}}
-C {gf180/error_amplifier_N_input_v4/xschem/error_amplifier_N_input_v4.sym} 1030 -460 0 0 {name=x1}
 C {devices/launcher.sym} 160 -530 0 0 {name=h3
 descr="Save & Netlist & sim" 
 tclcommand="xschem save; xschem netlist; xschem simulate"}
 C {launcher.sym} 160 -470 0 0 {name=h2
 descr="Annotate OP"
 tclcommand="set show_hidden_texts 1; xschem annotate_op"}
+C {gf180/error_amplifier_N_input_v4/xschem/error_amplifier_N_input_v4.sym} 1030 -460 0 0 {name=x1}

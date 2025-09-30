@@ -265,7 +265,7 @@ value="
 .param Vref = 1.2
 .param Vin = 1.2
 "}
-C {devices/vsource.sym} 140 -130 0 0 {name=V3 value=\{VDD\}}
+C {devices/vsource.sym} 140 -130 0 0 {name=V8 value=\{VDD\}}
 C {devices/gnd.sym} 140 -90 0 0 {name=l10 lab=GND}
 C {devices/lab_wire.sym} 140 -190 0 0 {name=p9 sig_type=std_logic lab=VDD}
 C {devices/vsource.sym} 220 -130 0 0 {name=V4 value=\{VSS\}}

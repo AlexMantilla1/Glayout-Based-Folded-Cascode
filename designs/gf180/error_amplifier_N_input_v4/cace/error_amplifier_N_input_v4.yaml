@@ -82,12 +82,23 @@ default_conditions:
     typical: 27
 
 parameters:
-  offset_param:
+  dc_params:
+    display: DC Params
     spec:
-      Voffset:
-        display: offset (MC)
-        description: Voffset (Monte Carlo)
-        unit: mV
+      Power:
+        display: Power
+        description: Power consumtion
+        unit: uW
+        minimum:
+          value: any
+        typical:
+          value: any
+        maximum:
+          value: 500
+      Vout:
+        display: Vout
+        description: Output voltage
+        unit: V
         minimum:
           value: any
         typical:
@@ -96,31 +107,156 @@ parameters:
           value: any
     tool:
       ngspice:
-        template: error_amplifier_N_input_v4_CACE_offset.sch
-        collate: iterations
+        template: error_amplifier_N_input_v4_CACE_op.sch
         format: ascii
         suffix: .data
-        variables: [Voffset]
-        script: error_amplifier_offset_postprocess.py
-        script_variables: [Voffset_arr]
-    plot:
-      Voffset:
-        type: histogram
-        xaxis: Voffset_arr
+        variables: [Vout, Power]
     conditions:
-      iterations: # for Monte Carlo
-        description: Iterations to run
-        display: Iterations
-        minimum: 1
-        maximum: 1000
-        step: linear
-        stepsize: 1
       corner:
-        typical: typical
+        enumerate: [ss, sf, fs, ff, typical]
       VDD:
-        typical: 1.8
+        minimum: 2.97
+        typical: 3.3
+        maximum: 3.63
       temperature:
+        minimum: -40
         typical: 27
+        maximum: 125
+
+  ac_params:
+    display: STB Params
+    spec:
+      # print A0 UGB PM GM BW
+      A0:
+        display: Av
+        description: Opamp's DC Gain
+        unit: dB
+        minimum:
+          value: 80
+        typical:
+          value: any
+        maximum:
+          value: any
+      UGB:
+        display: UGB
+        description: Unitary Gain Bandwidth
+        unit: kHz
+        minimum:
+          value: 100
+        typical:
+          value: any
+        maximum:
+          value: any
+      PM:
+        display: PM
+        description: Opamp's Phase Margin
+        unit: °
+        minimum:
+          value: 80
+        typical:
+          value: any
+        maximum:
+          value: any
+      GM:
+        display: GM
+        description: Opamp's Gain Margin
+        unit: °
+        minimum:
+          value: any
+        typical:
+          value: any
+        maximum:
+          value: any
+      BW:
+        display: BW
+        description: Opamp's Bandwidth
+        unit: kHz
+        minimum:
+          value: any
+        typical:
+          value: any
+        maximum:
+          value: any
+    tool:
+      ngspice:
+        template: error_amplifier_N_input_v4_CACE_ac.sch
+        format: ascii
+        suffix: .data
+        variables: [A0, UGB, PM, GM, BW]
+    conditions:
+      corner:
+        enumerate: [ss, sf, fs, ff, typical]
+      VDD:
+        minimum: 2.97
+        typical: 3.3
+        maximum: 3.63
+      temperature:
+        minimum: -40
+        typical: 27
+        maximum: 125
+
+  os_params:
+    display: Output Swing Params
+    spec:
+      Output_swing:
+        display: Output_swing
+        description: Output voltage swing.
+        unit: V
+        minimum:
+          value: 1
+        typical:
+          value: any
+        maximum:
+          value: any
+    tool:
+      ngspice:
+        template: error_amplifier_N_input_v4_CACE_os.sch
+        format: ascii
+        suffix: .data
+        variables: [Output_swing]
+    conditions:
+      corner:
+        enumerate: [ss, fs, sf, ff, typical]
+      VDD:
+        minimum: 2.97
+        typical: 3.3
+        maximum: 3.63
+      temperature:
+        minimum: -40
+        typical: 27
+        maximum: 125
+
+  cmrr_params:
+    display: Common Mode Params (Common mode gain CMRR = Acm/Av)
+    spec:
+      Acm:
+        display: Acm
+        description: Common mode gain.
+        unit: dB
+        minimum:
+          value: any
+        typical:
+          value: any
+        maximum:
+          value: any
+    tool:
+      ngspice:
+        template: error_amplifier_N_input_v4_CACE_cmrr.sch
+        format: ascii
+        suffix: .data
+        variables: [Acm]
+    conditions:
+      corner:
+        enumerate: [ss, sf, fs, ff, typical]
+      VDD:
+        minimum: 2.97
+        typical: 3.3
+        maximum: 3.63
+      temperature:
+        minimum: -40
+        typical: 27
+        maximum: 125
+
   magic_area:
     spec:
       area:
@@ -142,6 +278,7 @@ parameters:
         maximum:
           value: any
     tool: magic_area
+
   magic_drc:
     description: Magic DRC
     display: Magic DRC

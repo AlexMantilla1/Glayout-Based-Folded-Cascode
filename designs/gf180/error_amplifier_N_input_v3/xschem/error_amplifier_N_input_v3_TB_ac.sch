@@ -61,7 +61,7 @@ C {devices/lab_wire.sym} 1010 -340 0 0 {name=p12 sig_type=std_logic lab=VSS}
 C {devices/lab_wire.sym} 1010 -360 0 0 {name=p13 sig_type=std_logic lab=VDD}
 C {devices/capa.sym} 1210 -380 0 0 {name=C4
 m=1
-value=5p
+value=2p
 footprint=1206
 device="ceramic capacitor"}
 C {devices/vsource.sym} 280 -240 0 0 {name=V6 value=\{Vin\}}
@@ -92,7 +92,7 @@ simulator=ngspice
 only_toplevel=false 
 value="
 .control
-*.option temp=125
+*.option temp = 125
 save all
 
 ** OP simulation

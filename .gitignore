@@ -1,10 +1,10 @@
 # Ignore simulation results from CACE on designs/sky130/
 # generated sim data
-runs/
+designs/gf180/*/runs/
 # generated netlists
-netlist/
+designs/gf180/*/netlist/
 # generated doc
-docs/
+designs/gf180/*/docs/
 
 # Just in case MacOS is used
 .DS_Store

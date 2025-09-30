@@ -2,7 +2,7 @@ import pya
 import klayout.db as db
 
 ly = pya.Layout()
-ly.read("error_amplifier_N_input_v4_pcells.gds")
+ly.read("folded_cascode_core_pcells.gds")
 
 """
 # collect the cells to convert:
@@ -18,4 +18,4 @@ for inst in insts_to_convert:
 ctx = db.SaveLayoutOptions()
 ctx.write_context_info = False
 
-ly.write("error_amplifier_N_input_v4.gds", ctx)
+ly.write("folded_cascode_core.gds", ctx)

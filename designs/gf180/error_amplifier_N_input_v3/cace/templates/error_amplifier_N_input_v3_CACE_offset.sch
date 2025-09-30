@@ -87,7 +87,7 @@ C {lab_pin.sym} 790 -150 2 1 {name=p9 sig_type=std_logic lab=VSS}
 C {lab_pin.sym} 690 -250 2 1 {name=p10 sig_type=std_logic lab=Vref}
 C {capa.sym} 960 -170 0 0 {name=C1
 m=1
-value=5p
+value=2p
 footprint=1206
 device="ceramic capacitor"}
 C {lab_pin.sym} 960 -60 2 1 {name=p2 sig_type=std_logic lab=VSS}

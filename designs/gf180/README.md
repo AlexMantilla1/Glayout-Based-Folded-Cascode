@@ -3,6 +3,110 @@
 
 In this folder you will find all files related to schematic design and verification. Here we have implemented Xschem as user interface tool to run ngspice and design typical case, then using CACE to run PVT and MC simulations.
 
+## Table of Contents
+
+1.  [File structure](#1-File-structure)
+2.  [Design objectives](#2-Design-objectives)
+3.  [Design Specifications](#3-specifications-of-the-designed-folded-cascode)
+
+---
+
+## 1. File Structure
+
+Each design folder contains the verification setup for a specific circuit. Inside, you can run:
+
+- Conventional testbenches
+- PVT (Process, Voltage, Temperature) verification
+- Monte Carlo analysis
+
+Currently, the full verification flow is only available in the `error_amplifier_v*version*` directories.
+
+### 1.1. File Organization
+
+The design files follow the naming convention:
+
+```bash
+error_amplifier_N_input_*device*_v*version*
+```
+
+*device* could be:
+
+- **core** → contains only the amplifier core  
+- **bias** → contains only the biasing network for that version  
+- *(empty)* → represents the complete top-level amplifier (core + bias)  
+
+This structure makes it easy to test and compare individual building blocks as well as the full design.
+
+### 1.2. Open the Xchem testbench
+
+To open the schematics with **xschem** inside the Docker container, navigate to the following directory:
+
+```bash
+Glayout-Based-Folded-Cascode/designs
+```
+
+From there, you can run:
+
+- To open a specific file directly:
+
+  ```bash
+  xschem path/to/file.sch &
+  ```
+
+- To open xschem first and then load the desired file from its interface:
+
+  ```bash
+  xschem &
+  ```
+
+**Note:** xschem uses the directory from which it was launched as the reference path for opening files.
+For consistency, the convention is to always launch xschem from the designs directory.
+
+All design files should be opened this way, except for the CACE templates, which follow their own path conventions.
+
+### 1.3. Open the CACE Templates
+
+### 2.1. Opening CACE Simulation Files
+
+To open the CACE simulation templates, xschem must be executed from within the corresponding project directory:
+
+```bash
+Glayout-Based-Folded-Cascode/designs/error_amplifier_v*version*/
+```
+
+Once inside the directory, run:
+
+```bash
+xschem cace/templates/file_to_open.sch &
+```
+
+### 1.4. Run PVT and Montecarlo with CACE
+
+CACE is used to run corner analysis as well as Monte Carlo simulations. Note that Monte Carlo can also be executed directly from the conventional testbenches.
+
+Each CACE setup is defined by a YAML file located at:
+
+```bash
+designs/error_amplifier_v*version*/cace/error_amplifier_v*version*.yaml
+```
+
+This YAML file describes which simulations will be executed. 
+To run the simulations as with the CACE templates, you must first navigate to the project directory from there, run one of the following commands:
+
+- Schematic-level verification only:  
+
+  ```bash
+  cace -s schematic
+  ```
+
+- Post-layout-level verification:  
+
+  ```bash
+  cace
+  ```
+
+## 2. Design objectives
+
 As mentioned in home, four designs were implemented to evaluate the proposed flow, all based on an OTA folded cascode topology with an N-type differential input and a single-ended output. The core amplifier circuit is shown here:
 
 ![Core Amplifier Schematic](../../img/Folded_core.png)
@@ -11,7 +115,7 @@ while the biasing circuit is presented as:
 
 ![Biasing Circuit Schematic](../../img/Folded_bias.png)
 
-The concept behind this 4 versions is that the same circuit can be designed for different applications, requesting high gain and low offset, or requesting wide-band signal amplification. However, the layout structure may not change, even if devices dimentions change, placement and signal work may stay the same. 
+The concept behind this 4 versions is that the same circuit can be designed for different applications, requesting high gain and low offset, or requesting wide-band signal amplification. However, the layout structure may not change, even if devices dimentions change, placement and signal work may stay the same.
 
 
 

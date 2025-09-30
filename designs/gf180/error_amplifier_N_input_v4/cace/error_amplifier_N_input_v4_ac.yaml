@@ -71,11 +71,6 @@ default_conditions:
     display: Vsweep
     unit: V
     typical: 0
-  runs:
-    description: Runs for the MC simulations
-    display: runs
-    unit: any
-    typical: 100
   corner:
     description: Process corner
     display: Corner
@@ -87,47 +82,6 @@ default_conditions:
     typical: 27
 
 parameters:
-  dc_params:
-    display: DC Params
-    spec:
-      Power:
-        display: Power
-        description: Power consumtion
-        unit: uW
-        minimum:
-          value: any
-        typical:
-          value: any
-        maximum:
-          value: 500
-      Vout:
-        display: Vout
-        description: Output voltage
-        unit: V
-        minimum:
-          value: any
-        typical:
-          value: any
-        maximum:
-          value: any
-    tool:
-      ngspice:
-        template: error_amplifier_N_input_v4_CACE_op.sch
-        format: ascii
-        suffix: .data
-        variables: [Vout, Power]
-    conditions:
-      corner:
-        enumerate: [typical]
-      VDD:
-        minimum: 2.97
-        typical: 3.3
-        maximum: 3.63
-      temperature:
-        minimum: -40
-        typical: 27
-        maximum: 125
-
   ac_params:
     display: STB Params
     spec:
@@ -137,7 +91,7 @@ parameters:
         description: Opamp's DC Gain
         unit: dB
         minimum:
-          value: 50
+          value: 80
         typical:
           value: any
         maximum:
@@ -145,9 +99,9 @@ parameters:
       UGB:
         display: UGB
         description: Unitary Gain Bandwidth
-        unit: MHz
+        unit: kHz
         minimum:
-          value: 20
+          value: 100
         typical:
           value: any
         maximum:
@@ -157,7 +111,7 @@ parameters:
         description: Opamp's Phase Margin
         unit: °
         minimum:
-          value: 60
+          value: 80
         typical:
           value: any
         maximum:
@@ -190,7 +144,7 @@ parameters:
         variables: [A0, UGB, PM, GM, BW]
     conditions:
       corner:
-        enumerate: [ss, ff, sf, fs, typical]
+        enumerate: [ss, sf, fs, ff, typical]
       VDD:
         minimum: 2.97
         typical: 3.3
@@ -198,7 +152,7 @@ parameters:
       temperature:
         minimum: -40
         typical: 27
-        maximum: 125
+        maximum: 125 
   magic_area:
     spec:
       area:

@@ -278,9 +278,9 @@ C {devices/code_shown.sym} 710 -600 0 0 {name=Voltage_sources only_toplevel=true
 value="
 .param VDD = 3.3
 .param VSS = 0
-.param VbiasN1 = 0.71
-.param VbiasN2 = 1.47
-.param VbiasP2 = 1.01
+.param VbiasN1 = 0.9
+.param VbiasN2 = 1.3
+.param VbiasP2 = 0.9
 .param Vin = 1.2
 "}
 C {devices/vsource.sym} 270 -120 0 0 {name=V1 value=\{VbiasP2\}}

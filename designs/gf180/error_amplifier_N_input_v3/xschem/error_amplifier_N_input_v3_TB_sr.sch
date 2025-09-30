@@ -37,7 +37,7 @@ C {lab_pin.sym} 780 -160 2 1 {name=p9 sig_type=std_logic lab=VSS}
 C {lab_pin.sym} 530 -260 2 1 {name=p10 sig_type=std_logic lab=Vin}
 C {capa.sym} 1100 -180 0 0 {name=C1
 m=1
-value=5p
+value=2p
 footprint=1206
 device="ceramic capacitor"}
 C {lab_pin.sym} 1100 -70 2 1 {name=p1 sig_type=std_logic lab=VSS}
@@ -56,7 +56,7 @@ C {devices/gnd.sym} 350 -90 0 0 {name=l8 lab=GND}
 C {devices/lab_wire.sym} 350 -190 0 0 {name=p14 sig_type=std_logic lab=Vin}
 C {devices/code_shown.sym} 690 -580 0 0 {name=Voltage_sources only_toplevel=true
 value="
-.param VDD = 1.8
+.param VDD = 3.3
 .param VSS = 0
 .param Vref = 1.2
 .param Vin = 1.2

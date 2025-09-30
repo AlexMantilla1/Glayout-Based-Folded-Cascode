@@ -79,7 +79,7 @@ footprint=1206
 device=inductor}
 C {capa.sym} 1140 -340 0 0 {name=C1
 m=1
-value=2p
+value=5p
 footprint=1206
 device="ceramic capacitor"}
 C {lab_pin.sym} 1140 -440 0 1 {name=p2 sig_type=std_logic lab=Vout}
@@ -91,7 +91,7 @@ C {vcvs.sym} 970 -100 0 1 {name=E1 value=1}
 C {devices/gnd.sym} 970 -40 0 0 {name=l11 lab=GND}
 C {devices/lab_wire.sym} 830 -150 0 0 {name=p18 sig_type=std_logic lab=Vy}
 C {devices/lab_wire.sym} 970 -150 0 0 {name=p19 sig_type=std_logic lab=Vz}
-C {devices/code_shown.sym} 170 -760 0 0 {name=SETUP
+C {devices/code_shown.sym} 290 -770 0 0 {name=SETUP
 simulator=ngspice
 only_toplevel=false
 value="

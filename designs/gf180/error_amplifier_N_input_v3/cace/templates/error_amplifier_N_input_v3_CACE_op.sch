@@ -19,8 +19,8 @@ N 190 -120 190 -80 {
 lab=GND}
 N 290 -120 290 -80 {
 lab=GND}
-N 190 -190 190 -180 {lab=#net1}
-N 190 -270 190 -250 {lab=VDD}
+N 190 -190 190 -180 {lab=VDD}
+N 190 -210 190 -190 {lab=VDD}
 N 110 -210 110 -180 {lab=VSS}
 N 290 -210 290 -180 {lab=Vref}
 N 630 -280 680 -280 {lab=Vout}
@@ -57,7 +57,7 @@ C {lab_pin.sym} 520 -160 2 1 {name=p9 sig_type=std_logic lab=VSS}
 C {lab_pin.sym} 420 -260 2 1 {name=p10 sig_type=std_logic lab=Vref}
 C {capa.sym} 690 -180 0 0 {name=C1
 m=1
-value=5p
+value=2p
 footprint=1206
 device="ceramic capacitor"}
 C {lab_pin.sym} 690 -70 2 1 {name=p1 sig_type=std_logic lab=VSS}
@@ -70,9 +70,8 @@ C {devices/gnd.sym} 190 -80 0 0 {name=l8 lab=GND}
 C {devices/vsource.sym} 290 -150 0 0 {name=V3 value=CACE\{Vref\} savecurrent=false}
 C {devices/gnd.sym} 290 -80 0 0 {name=l9 lab=GND}
 C {lab_pin.sym} 290 -210 2 1 {name=p3 sig_type=std_logic lab=Vref}
-C {lab_pin.sym} 190 -270 2 1 {name=p4 sig_type=std_logic lab=VDD}
+C {lab_pin.sym} 190 -210 2 1 {name=p4 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} 110 -210 2 1 {name=p6 sig_type=std_logic lab=VSS}
-C {ammeter.sym} 190 -220 2 0 {name=vdd_i savecurrent=true spice_ignore=0}
 C {code.sym} 120 -460 0 0 {name=OP only_toplevel=true value="
 .control
 save all
@@ -81,7 +80,7 @@ save all
 op
 
 let Vout = v(Vout)
-let Power = i(vdd_i)*v(VDD)
+let Power = abs(i(V1))*CACE\{VDD\}
 
 print Vout Ivdd
 echo $&Vout $&Power> CACE\{simpath\}/CACE\{filename\}_CACE\{N\}.data

@@ -37,7 +37,7 @@ C {devices/gnd.sym} 160 -50 0 0 {name=l6 lab=GND}
 C {devices/lab_wire.sym} 160 -150 0 0 {name=p10 sig_type=std_logic lab=VSS}
 C {devices/capa.sym} 960 -140 0 0 {name=C1
 m=1
-value=1p
+value=2p
 footprint=1206
 device="ceramic capacitor"}
 C {devices/vsource.sym} 320 -90 0 0 {name=Vin value=\{Vin\}}
@@ -55,10 +55,9 @@ value="
 .param VSS = 0
 .param Vref = 1.2
 .param Vin = 1.2
-.param Vsweep = 0
 "}
 C {devices/lab_wire.sym} 760 -140 0 0 {name=p4 sig_type=std_logic lab=Vref}
-C {devices/vsource.sym} 570 -220 2 0 {name=Vsweep value=\{Vsweep\}}
+C {devices/vsource.sym} 570 -220 2 0 {name=Vsweep value=0}
 C {devices/gnd.sym} 320 -50 0 0 {name=l1 lab=GND}
 C {devices/lab_wire.sym} 320 -150 0 0 {name=p2 sig_type=std_logic lab=Vin}
 C {devices/lab_wire.sym} 660 -190 0 0 {name=p3 sig_type=std_logic lab=Vin}
@@ -68,7 +67,7 @@ only_toplevel=false
 value="
 
 *.param TEMPGAUSS = agauss(40, 30, 1)
-*.option terror_amplifier_N_input_v3p = 'TEMPGAUSS'
+*.option temp = 'TEMPGAUSS'
 
 .param sw_stat_global = 1
 .param sw_stat_mismatch = 1
@@ -102,8 +101,6 @@ value="
     setplot $dt                 $ go back to the previous plot
 
     let run = run + 1
-    *op
-    *write error_amplifier_N_input_v3_TB_offset.raw
     reset
   end    $ loop ends here
 

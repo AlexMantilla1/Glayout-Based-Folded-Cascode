@@ -50,7 +50,7 @@ C {devices/lab_wire.sym} 780 -210 0 0 {name=p12 sig_type=std_logic lab=VSS}
 C {devices/lab_wire.sym} 780 -230 0 0 {name=p13 sig_type=std_logic lab=VDD}
 C {devices/capa.sym} 980 -250 0 0 {name=C4
 m=1
-value=5p
+value=2p
 footprint=1206
 device="ceramic capacitor"}
 C {devices/vsource.sym} 290 -120 0 0 {name=V6 value="\{Vin\}"}
@@ -260,7 +260,7 @@ plot vout_mag vout_phase
 "}
 C {devices/code_shown.sym} 530 -550 0 0 {name=Voltage_sources only_toplevel=true
 value="
-.param VDD = 1.8
+.param VDD = 3.3
 .param VSS = 0
 .param Vref = 1.2
 .param Vin = 1.2
